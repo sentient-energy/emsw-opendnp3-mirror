@@ -54,6 +54,10 @@ void PhysicalLayerManagerXML :: AddList(const APLXML_Base::PhysicalLayerList_t* 
 	AddStandalones<TCPv4Server_t>(apList->TCPv4ServerVector, aLevel);
 	AddStandalones<TCPv6Client_t>(apList->TCPv6ClientVector, aLevel);
 	AddStandalones<TCPv6Server_t>(apList->TCPv6ServerVector, aLevel);
+	AddStandalones<UDPv4Client_t>(apList->UDPv4ClientVector, aLevel);
+	AddStandalones<UDPv4Server_t>(apList->UDPv4ServerVector, aLevel);
+	AddStandalones<UDPv6Client_t>(apList->UDPv6ClientVector, aLevel);
+	AddStandalones<UDPv6Server_t>(apList->UDPv6ServerVector, aLevel);
 }
 
 // Created helper function to remove ugly loops.

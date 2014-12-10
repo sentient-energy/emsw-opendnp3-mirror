@@ -174,14 +174,14 @@ MonitorStateInit MonitorStateInit::mInstance;
 /* ---- SuspendedBase --- */
 void MonitorStateSuspendedBase::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
-	MonitorStateActions::ChangeState(apContext, MonitorStateOpening::Inst());
-	MonitorStateActions::AsyncOpen(apContext);
+	MonitorStateActions::ChangeState(apContext, MonitorStateWaiting::Inst());
+	MonitorStateActions::StartOpenTimer(apContext);
 }
 
 void MonitorStateSuspendedBase::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
-	MonitorStateActions::ChangeState(apContext, MonitorStateOpeningOne::Inst());
-	MonitorStateActions::AsyncOpen(apContext);
+	MonitorStateActions::ChangeState(apContext, MonitorStateWaiting::Inst());
+	MonitorStateActions::StartOpenTimer(apContext);
 }
 
 void MonitorStateSuspendedBase::OnShutdownRequest(PhysicalLayerMonitor* apContext)

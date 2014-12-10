@@ -34,6 +34,10 @@ public:
 	static APLXML_Base::TCPv4Client_t* AddTCPv4Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAdderss, int aPort);
 	static APLXML_Base::TCPv6Server_t* AddTCPv6Server(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arEndpoint, int aPort);
 	static APLXML_Base::TCPv6Client_t* AddTCPv6Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAdderss, int aPort);
+	static APLXML_Base::UDPv4Server_t* AddUDPv4Server(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arEndpoint, int aPort);
+	static APLXML_Base::UDPv4Client_t* AddUDPv4Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAdderss, int aPort);
+	static APLXML_Base::UDPv6Server_t* AddUDPv6Server(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arEndpoint, int aPort);
+	static APLXML_Base::UDPv6Client_t* AddUDPv6Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAdderss, int aPort);
 	static APLXML_Base::Serial_t* AddSerial(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arName, const std::string& arDevice);
 
 };

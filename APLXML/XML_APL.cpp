@@ -67,6 +67,50 @@ APLXML_Base::TCPv6Client_t* XML_APL::AddTCPv6Client(APLXML_Base::PhysicalLayerLi
 	return pLayer;
 }
 
+APLXML_Base::UDPv4Server_t* XML_APL::AddUDPv4Server(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arEndpoint, int aPort)
+{
+	APLXML_Base::UDPv4Server_t* pLayer = new APLXML_Base::UDPv4Server_t();
+	pLayer->Name = arDevice;
+	pLayer->Endpoint = arEndpoint;
+	pLayer->Port = aPort;
+	pLayer->OpenRetryMS = 5000;
+	arList.UDPv4ServerVector.push_back(pLayer);
+	return pLayer;
+}
+
+APLXML_Base::UDPv4Client_t* XML_APL::AddUDPv4Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAddress, int aPort)
+{
+	APLXML_Base::UDPv4Client_t* pLayer = new APLXML_Base::UDPv4Client_t();
+	pLayer->Name = arDevice;
+	pLayer->Address = arAddress;
+	pLayer->Port = aPort;
+	pLayer->OpenRetryMS = 5000;
+	arList.UDPv4ClientVector.push_back(pLayer);
+	return pLayer;
+}
+
+APLXML_Base::UDPv6Server_t* XML_APL::AddUDPv6Server(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arEndpoint, int aPort)
+{
+	APLXML_Base::UDPv6Server_t* pLayer = new APLXML_Base::UDPv6Server_t();
+	pLayer->Name = arDevice;
+	pLayer->Endpoint = arEndpoint;
+	pLayer->Port = aPort;
+	pLayer->OpenRetryMS = 5000;
+	arList.UDPv6ServerVector.push_back(pLayer);
+	return pLayer;
+}
+
+APLXML_Base::UDPv6Client_t* XML_APL::AddUDPv6Client(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arDevice, const std::string& arAddress, int aPort)
+{
+	APLXML_Base::UDPv6Client_t* pLayer = new APLXML_Base::UDPv6Client_t();
+	pLayer->Name = arDevice;
+	pLayer->Address = arAddress;
+	pLayer->Port = aPort;
+	pLayer->OpenRetryMS = 5000;
+	arList.UDPv6ClientVector.push_back(pLayer);
+	return pLayer;
+}
+
 APLXML_Base::Serial_t* XML_APL::AddSerial(APLXML_Base::PhysicalLayerList_t& arList, const std::string& arName, const std::string& arDevice)
 {
 	APLXML_Base::Serial_t* pLayer = new APLXML_Base::Serial_t();

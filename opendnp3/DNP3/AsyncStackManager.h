@@ -32,6 +32,7 @@
 #include <opendnp3/APL/Threadable.h>
 #include <opendnp3/APL/TimerSourceASIO.h>
 #include <opendnp3/APL/TcpSettings.h>
+#include <opendnp3/APL/UdpSettings.h>
 #include <opendnp3/DNP3/LinkRoute.h>
 #include <opendnp3/DNP3/VtoDataInterface.h>
 #include <opendnp3/DNP3/VtoRouterManager.h>
@@ -90,6 +91,20 @@ public:
 
 	// Adds a TCPv6Server port, excepts if the port already exists
 	void AddTCPv6Server(const std::string& arName, PhysLayerSettings, TcpSettings);
+
+	// Adds a UDPv4Client port, excepts if the port already exists
+	void AddUDPClient(const std::string& arName, PhysLayerSettings, UdpSettings);
+	void AddUDPv4Client(const std::string& arName, PhysLayerSettings, UdpSettings);
+
+	// Adds a UDPv4Server port, excepts if the port already exists
+	void AddUDPServer(const std::string& arName, PhysLayerSettings, UdpSettings);
+	void AddUDPv4Server(const std::string& arName, PhysLayerSettings, UdpSettings);
+
+	// Adds a UDPv6Client port, excepts if the port already exists
+	void AddUDPv6Client(const std::string& arName, PhysLayerSettings, UdpSettings);
+
+	// Adds a UDPv6Server port, excepts if the port already exists
+	void AddUDPv6Server(const std::string& arName, PhysLayerSettings, UdpSettings);
 
 	// Adds a Serial port, excepts if the port already exists
 	void AddSerial(const std::string& arName, PhysLayerSettings, SerialSettings);

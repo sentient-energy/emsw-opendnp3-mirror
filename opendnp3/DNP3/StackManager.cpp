@@ -72,6 +72,36 @@ void StackManager::AddTCPv6Server(const std::string& arName, PhysLayerSettings s
 	mpImpl->AddTCPv6Server(arName, s, aTcp);
 }
 
+void StackManager::AddUDPClient(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	AddUDPv4Client(arName, s, aUdp);
+}
+
+void StackManager::AddUDPv4Client(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	mpImpl->AddUDPv4Client(arName, s, aUdp);
+}
+
+void StackManager::AddUDPServer(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	AddUDPv4Server(arName, s, aUdp);
+}
+
+void StackManager::AddUDPv4Server(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	mpImpl->AddUDPv4Server(arName, s, aUdp);
+}
+
+void StackManager::AddUDPv6Client(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	mpImpl->AddUDPv6Client(arName, s, aUdp);
+}
+
+void StackManager::AddUDPv6Server(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	mpImpl->AddUDPv6Server(arName, s, aUdp);
+}
+
 void StackManager::AddSerial(const std::string& arName, PhysLayerSettings s, SerialSettings aSerial)
 {
 	mpImpl->AddSerial(arName, s, aSerial);

@@ -33,17 +33,29 @@ IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetFactoryAsync(const APLX
 	const APLXML_Base::Serial_t* pSerial = dynamic_cast<const APLXML_Base::Serial_t*>(apCfg);
 	if(pSerial != NULL) return GetAsync(pSerial);
 
-	const APLXML_Base::TCPv4Server_t* pServerV4 = dynamic_cast<const APLXML_Base::TCPv4Server_t*>(apCfg);
-	if(pServerV4 != NULL) return GetAsync(pServerV4);
+	const APLXML_Base::TCPv4Server_t* pTCPServerV4 = dynamic_cast<const APLXML_Base::TCPv4Server_t*>(apCfg);
+	if(pTCPServerV4 != NULL) return GetAsync(pTCPServerV4);
 
-	const APLXML_Base::TCPv4Client_t* pClientV4 = dynamic_cast<const APLXML_Base::TCPv4Client_t*>(apCfg);
-	if(pClientV4 != NULL) return GetAsync(pClientV4);
+	const APLXML_Base::TCPv4Client_t* pTCPClientV4 = dynamic_cast<const APLXML_Base::TCPv4Client_t*>(apCfg);
+	if(pTCPClientV4 != NULL) return GetAsync(pTCPClientV4);
 
-	const APLXML_Base::TCPv6Server_t* pServerV6 = dynamic_cast<const APLXML_Base::TCPv6Server_t*>(apCfg);
-	if(pServerV6 != NULL) return GetAsync(pServerV6);
+	const APLXML_Base::TCPv6Server_t* pTCPServerV6 = dynamic_cast<const APLXML_Base::TCPv6Server_t*>(apCfg);
+	if(pTCPServerV6 != NULL) return GetAsync(pTCPServerV6);
 
-	const APLXML_Base::TCPv6Client_t* pClientV6 = dynamic_cast<const APLXML_Base::TCPv6Client_t*>(apCfg);
-	if(pClientV6 != NULL) return GetAsync(pClientV6);
+	const APLXML_Base::TCPv6Client_t* pTCPClientV6 = dynamic_cast<const APLXML_Base::TCPv6Client_t*>(apCfg);
+	if(pTCPClientV6 != NULL) return GetAsync(pTCPClientV6);
+
+	const APLXML_Base::UDPv4Server_t* pUDPServerV4 = dynamic_cast<const APLXML_Base::UDPv4Server_t*>(apCfg);
+	if(pUDPServerV4 != NULL) return GetAsync(pUDPServerV4);
+
+	const APLXML_Base::UDPv4Client_t* pUDPClientV4 = dynamic_cast<const APLXML_Base::UDPv4Client_t*>(apCfg);
+	if(pUDPClientV4 != NULL) return GetAsync(pUDPClientV4);
+
+	const APLXML_Base::UDPv6Server_t* pUDPServerV6 = dynamic_cast<const APLXML_Base::UDPv6Server_t*>(apCfg);
+	if(pUDPServerV6 != NULL) return GetAsync(pUDPServerV6);
+
+	const APLXML_Base::UDPv6Client_t* pUDPClientV6 = dynamic_cast<const APLXML_Base::UDPv6Client_t*>(apCfg);
+	if(pUDPClientV6 != NULL) return GetAsync(pUDPClientV6);
 
 	throw Exception(LOCATION, "Unknown PhysicalLayerDescriptor_t");
 }
@@ -72,6 +84,26 @@ IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base
 IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base::TCPv6Server_t* apCfg)
 {
 	return PhysicalLayerFactory::GetTCPv6ServerAsync(GetTcpV6ServerSettings(apCfg));
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base::UDPv4Client_t* apCfg)
+{
+	return PhysicalLayerFactory::GetUDPv4ClientAsync(GetUdpV4ClientSettings(apCfg));
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base::UDPv4Server_t* apCfg)
+{
+	return PhysicalLayerFactory::GetUDPv4ServerAsync(GetUdpV4ServerSettings(apCfg));
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base::UDPv6Client_t* apCfg)
+{
+	return PhysicalLayerFactory::GetUDPv6ClientAsync(GetUdpV6ClientSettings(apCfg));
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerXMLFactory :: GetAsync(const APLXML_Base::UDPv6Server_t* apCfg)
+{
+	return PhysicalLayerFactory::GetUDPv6ServerAsync(GetUdpV6ServerSettings(apCfg));
 }
 
 SerialSettings GetSerialSettings(const APLXML_Base::Serial_t* apCfg)
@@ -165,6 +197,46 @@ TcpSettings GetTcpV6ServerSettings(const APLXML_Base::TCPv6Server_t* apCfg)
 	s.mAddress = apCfg->Endpoint;
 	s.mPort = boost::numeric::converter<boost::uint16_t, int>::convert(apCfg->Port);
 	s.mUseKeepAlives = apCfg->UseKeepAlives;
+	s.mSendBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->SendBufferSize);
+	s.mRecvBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->RecvBufferSize);
+	return s;
+}
+
+UdpSettings GetUdpV4ClientSettings(const APLXML_Base::UDPv4Client_t* apCfg)
+{
+	UdpSettings s;
+	s.mAddress = apCfg->Address;
+	s.mPort = boost::numeric::converter<boost::uint16_t, int>::convert(apCfg->Port);
+	s.mSendBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->SendBufferSize);
+	s.mRecvBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->RecvBufferSize);
+	return s;
+}
+
+UdpSettings GetUdpV4ServerSettings(const APLXML_Base::UDPv4Server_t* apCfg)
+{
+	UdpSettings s;
+	s.mAddress = apCfg->Endpoint;
+	s.mPort = boost::numeric::converter<boost::uint16_t, int>::convert(apCfg->Port);
+	s.mSendBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->SendBufferSize);
+	s.mRecvBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->RecvBufferSize);
+	return s;
+}
+
+UdpSettings GetUdpV6ClientSettings(const APLXML_Base::UDPv6Client_t* apCfg)
+{
+	UdpSettings s;
+	s.mAddress = apCfg->Address;
+	s.mPort = boost::numeric::converter<boost::uint16_t, int>::convert(apCfg->Port);
+	s.mSendBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->SendBufferSize);
+	s.mRecvBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->RecvBufferSize);
+	return s;
+}
+
+UdpSettings GetUdpV6ServerSettings(const APLXML_Base::UDPv6Server_t* apCfg)
+{
+	UdpSettings s;
+	s.mAddress = apCfg->Endpoint;
+	s.mPort = boost::numeric::converter<boost::uint16_t, int>::convert(apCfg->Port);
 	s.mSendBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->SendBufferSize);
 	s.mRecvBufferSize = boost::numeric::converter<size_t, int>::convert(apCfg->RecvBufferSize);
 	return s;

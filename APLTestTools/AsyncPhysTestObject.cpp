@@ -28,13 +28,32 @@ AsyncPhysTestObject::AsyncPhysTestObject(FilterLevel aLevel, bool aImmediate, bo
 	LogTester(aImmediate),
 	mTCPClient(mLog.GetLogger(aLevel, "TCPClient"), this->GetService(), TcpSettings("127.0.0.1", 50000)),
 	mTCPServer(mLog.GetLogger(aLevel, "TCPSever"), this->GetService(), TcpSettings("127.0.0.1", 50000)),
-	mClientAdapter(mLog.GetLogger(aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(mLog.GetLogger(aLevel, "ServerAdapter"), &mTCPServer, aAutoRead),
-	mClientUpper(mLog.GetLogger(aLevel, "MockUpperClient")),
-	mServerUpper(mLog.GetLogger(aLevel, "MockUpperServer"))
+	mUDPClient(mLog.GetLogger(aLevel,"UDPClient"),
+	           this->GetService(),
+	           boost::asio::ip::udp::endpoint(
+	               boost::asio::ip::udp::v4(),
+	               50000),
+	           UdpSettings("127.0.0.1", 50000)),
+	mUDPServer(mLog.GetLogger(aLevel,"UDPSever"),
+	           this->GetService(),
+	           boost::asio::ip::udp::endpoint(
+	               boost::asio::ip::udp::v4(),
+	               50000),
+			   UdpSettings("127.0.0.1", 50000)),
+	mTCPClientAdapter(mLog.GetLogger(aLevel, "TCPClientAdapter"), &mTCPClient, aAutoRead),
+	mTCPServerAdapter(mLog.GetLogger(aLevel, "TCPServerAdapter"), &mTCPServer, aAutoRead),
+	mUDPClientAdapter(mLog.GetLogger(aLevel, "UDPClientAdapter"), &mUDPClient, aAutoRead),
+	mUDPServerAdapter(mLog.GetLogger(aLevel, "UDPServerAdapter"), &mUDPServer, aAutoRead),
+	mTCPClientUpper(mLog.GetLogger(aLevel, "MockUpperTCPClient")),
+	mTCPServerUpper(mLog.GetLogger(aLevel, "MockUpperTCPServer")),
+	mUDPClientUpper(mLog.GetLogger(aLevel, "MockUpperUDPClient")),
+	mUDPServerUpper(mLog.GetLogger(aLevel, "MockUpperUDPServer"))
 {
-	mClientAdapter.SetUpperLayer(&mClientUpper);
-	mServerAdapter.SetUpperLayer(&mServerUpper);
+	mTCPClientAdapter.SetUpperLayer(&mTCPClientUpper);
+	mTCPServerAdapter.SetUpperLayer(&mTCPServerUpper);
+
+	mUDPClientAdapter.SetUpperLayer(&mUDPClientUpper);
+	mUDPServerAdapter.SetUpperLayer(&mUDPServerUpper);
 }
 
 }

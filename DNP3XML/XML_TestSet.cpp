@@ -46,6 +46,9 @@ void XML_TestSet::Configure(APLXML_MTS::MasterTestSet_t& arMasterTest, bool aUse
 	xml::XML_APL::AddTCPv6Client(arMasterTest.PhysicalLayerList, "tcpv6client", "::1", 20000);
 	xml::XML_APL::AddTCPv6Server(arMasterTest.PhysicalLayerList, "vtov6tunnel", "::", 20001);
 
+	xml::XML_APL::AddUDPv4Client(arMasterTest.PhysicalLayerList, "udpclient", "127.0.0.1", 20000);
+	xml::XML_APL::AddUDPv6Client(arMasterTest.PhysicalLayerList, "udpv6client", "::1", 20000);
+
 	XML_DNP3::AddVtoPort(arMasterTest.Master.VtoPorts, "vtotunnel", 0, true);
 }
 
@@ -61,6 +64,9 @@ void XML_TestSet::Configure(APLXML_STS::SlaveTestSet_t& arSlaveTest)
 	xml::XML_APL::AddTCPv4Client(arSlaveTest.PhysicalLayerList, "vtotunnel", "127.0.0.1", 22);
 	xml::XML_APL::AddTCPv6Server(arSlaveTest.PhysicalLayerList, "tcpv6server", "::", 20000);
 	xml::XML_APL::AddTCPv6Client(arSlaveTest.PhysicalLayerList, "vtov6tunnel", "::1", 22);
+
+	xml::XML_APL::AddUDPv4Server(arSlaveTest.PhysicalLayerList, "udpserver", "0.0.0.0", 20000);
+	xml::XML_APL::AddUDPv6Server(arSlaveTest.PhysicalLayerList, "udpv6server", "::", 20000);
 
 	XML_DNP3::AddVtoPort(arSlaveTest.Slave.VtoPorts, "vtotunnel", 0, false);
 

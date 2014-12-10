@@ -23,10 +23,13 @@
 #include <opendnp3/APL/PhysicalLayerAsyncTCPv4Server.h>
 #include <opendnp3/APL/PhysicalLayerAsyncTCPv6Client.h>
 #include <opendnp3/APL/PhysicalLayerAsyncTCPv6Server.h>
+#include <opendnp3/APL/PhysicalLayerAsyncUDPClient.h>
+#include <opendnp3/APL/PhysicalLayerAsyncUDPServer.h>
 #include <opendnp3/APL/PhysicalLayerFactory.h>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/asio/ip/udp.hpp>
 
 namespace apl
 {
@@ -56,6 +59,26 @@ IPhysicalLayerAsyncFactory PhysicalLayerFactory :: GetTCPv6ServerAsync(TcpSettin
 	return boost::bind(&PhysicalLayerFactory::FGetTCPv6ServerAsync, s, _2, _1);
 }
 
+IPhysicalLayerAsyncFactory PhysicalLayerFactory :: GetUDPv4ClientAsync(UdpSettings s)
+{
+	return boost::bind(&PhysicalLayerFactory::FGetUDPv4ClientAsync, s, _2, _1);
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerFactory :: GetUDPv4ServerAsync(UdpSettings s)
+{
+	return boost::bind(&PhysicalLayerFactory::FGetUDPv4ServerAsync, s, _2, _1);
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerFactory :: GetUDPv6ClientAsync(UdpSettings s)
+{
+	return boost::bind(&PhysicalLayerFactory::FGetUDPv6ClientAsync, s, _2, _1);
+}
+
+IPhysicalLayerAsyncFactory PhysicalLayerFactory :: GetUDPv6ServerAsync(UdpSettings s)
+{
+	return boost::bind(&PhysicalLayerFactory::FGetUDPv6ServerAsync, s, _2, _1);
+}
+
 IPhysicalLayerAsync* PhysicalLayerFactory :: FGetSerialAsync(SerialSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
 {
 	return new PhysicalLayerAsyncSerial(apLogger, apSrv, s);
@@ -79,6 +102,48 @@ IPhysicalLayerAsync* PhysicalLayerFactory :: FGetTCPv6ClientAsync(TcpSettings s,
 IPhysicalLayerAsync* PhysicalLayerFactory :: FGetTCPv6ServerAsync(TcpSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
 {
 	return new PhysicalLayerAsyncTCPv6Server(apLogger, apSrv, s);
+}
+
+IPhysicalLayerAsync* PhysicalLayerFactory :: FGetUDPv4ClientAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
+{
+	return new PhysicalLayerAsyncUDPClient(
+			apLogger,
+			apSrv,
+			boost::asio::ip::udp::endpoint(
+				boost::asio::ip::udp::v4(),
+				s.mPort),
+			s);
+}
+
+IPhysicalLayerAsync* PhysicalLayerFactory :: FGetUDPv4ServerAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
+{
+	return new PhysicalLayerAsyncUDPServer(
+			apLogger,
+			apSrv,
+			boost::asio::ip::udp::endpoint(
+				boost::asio::ip::udp::v4(),
+				s.mPort),
+			s);
+}
+
+IPhysicalLayerAsync* PhysicalLayerFactory :: FGetUDPv6ClientAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
+{
+	return new PhysicalLayerAsyncUDPClient(apLogger,
+			apSrv,
+			boost::asio::ip::udp::endpoint(
+				boost::asio::ip::udp::v6(),
+				s.mPort),
+			s);
+}
+
+IPhysicalLayerAsync* PhysicalLayerFactory :: FGetUDPv6ServerAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger)
+{
+	return new PhysicalLayerAsyncUDPServer(apLogger,
+			apSrv,
+			boost::asio::ip::udp::endpoint(
+				boost::asio::ip::udp::v6(),
+				s.mPort),
+			s);
 }
 
 }

@@ -25,6 +25,7 @@
 #include <opendnp3/APL/PhysLayerSettings.h>
 #include <opendnp3/APL/SerialTypes.h>
 #include <opendnp3/APL/TcpSettings.h>
+#include <opendnp3/APL/UdpSettings.h>
 #include <opendnp3/DNP3/MasterStackConfig.h>
 #include <opendnp3/DNP3/SlaveStackConfig.h>
 #include <opendnp3/DNP3/VtoDataInterface.h>
@@ -79,6 +80,30 @@ public:
 	void AddTCPv6Server(const std::string& arName,
 	                    PhysLayerSettings aPhys,
 	                    TcpSettings aTcp);
+
+	void AddUDPClient(const std::string& arName,
+	                  PhysLayerSettings aPhys,
+	                  UdpSettings aUdp);
+
+	void AddUDPv4Client(const std::string& arName,
+	                    PhysLayerSettings aPhys,
+	                    UdpSettings aUdp);
+
+	void AddUDPServer(const std::string& arName,
+	                  PhysLayerSettings aPhys,
+	                  UdpSettings aUdp);
+
+	void AddUDPv4Server(const std::string& arName,
+	                    PhysLayerSettings aPhys,
+	                    UdpSettings aUdp);
+
+	void AddUDPv6Client(const std::string& arName,
+	                    PhysLayerSettings aPhys,
+	                    UdpSettings aUdp);
+
+	void AddUDPv6Server(const std::string& arName,
+	                    PhysLayerSettings aPhys,
+	                    UdpSettings aUdp);
 
 	void AddSerial(const std::string& arName,
 	               PhysLayerSettings aPhys,

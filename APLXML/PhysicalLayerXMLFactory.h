@@ -23,6 +23,7 @@
 #include <opendnp3/APL/PhysicalLayerFunctors.h>
 #include <opendnp3/APL/SerialTypes.h>
 #include <opendnp3/APL/TcpSettings.h>
+#include <opendnp3/APL/UdpSettings.h>
 
 namespace apl
 {
@@ -42,6 +43,10 @@ public:
 	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::TCPv4Server_t* apCfg);
 	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::TCPv6Client_t* apCfg);
 	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::TCPv6Server_t* apCfg);
+	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::UDPv4Client_t* apCfg);
+	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::UDPv4Server_t* apCfg);
+	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::UDPv6Client_t* apCfg);
+	static IPhysicalLayerAsyncFactory GetAsync(const APLXML_Base::UDPv6Server_t* apCfg);
 };
 
 int BaudToInt(APLXML_Base::BaudRateEnum aBaud);
@@ -53,6 +58,10 @@ TcpSettings GetTcpV4ClientSettings(const APLXML_Base::TCPv4Client_t* apCfg);
 TcpSettings GetTcpV4ServerSettings(const APLXML_Base::TCPv4Server_t* apCfg);
 TcpSettings GetTcpV6ClientSettings(const APLXML_Base::TCPv6Client_t* apCfg);
 TcpSettings GetTcpV6ServerSettings(const APLXML_Base::TCPv6Server_t* apCfg);
+UdpSettings GetUdpV4ClientSettings(const APLXML_Base::UDPv4Client_t* apCfg);
+UdpSettings GetUdpV4ServerSettings(const APLXML_Base::UDPv4Server_t* apCfg);
+UdpSettings GetUdpV6ClientSettings(const APLXML_Base::UDPv6Client_t* apCfg);
+UdpSettings GetUdpV6ServerSettings(const APLXML_Base::UDPv6Server_t* apCfg);
 
 }
 }

@@ -16,8 +16,8 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-#ifndef __TCP_SETTINGS_H_
-#define __TCP_SETTINGS_H_
+#ifndef __UDP_SETTINGS_H_
+#define __UDP_SETTINGS_H_
 
 #include <string>
 #include <boost/cstdint.hpp>
@@ -25,37 +25,25 @@
 namespace apl
 {
 
-struct TcpSettings {
-	TcpSettings() :
+struct UdpSettings {
+	UdpSettings() :
 		mAddress(),
 		mPort(0),
-		mUseKeepAlives(false),
 		mSendBufferSize(0),
 		mRecvBufferSize(0)
 	{
 	}
 
-	TcpSettings(const std::string& aAddress, boost::uint16_t aPort) :
+	UdpSettings(const std::string& aAddress, boost::uint16_t aPort) :
 		mAddress(aAddress),
 		mPort(aPort),
-		mUseKeepAlives(false),
 		mSendBufferSize(0),
 		mRecvBufferSize(0)
-	{
-	}
-
-	TcpSettings(const std::string& aAddress, boost::uint16_t aPort, bool useKeepAlives) :
-			mAddress(aAddress),
-			mPort(aPort),
-			mUseKeepAlives(useKeepAlives),
-			mSendBufferSize(0),
-			mRecvBufferSize(0)
 	{
 	}
 
 	std::string mAddress; // For server, this is the endpoint
 	boost::uint16_t mPort;
-	bool mUseKeepAlives;
 	size_t mSendBufferSize; // 0 indicates to use system default
 	size_t mRecvBufferSize; // 0 indicates to use system default
 };

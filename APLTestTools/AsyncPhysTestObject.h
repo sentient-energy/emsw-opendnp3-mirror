@@ -24,6 +24,8 @@
 #include <APLTestTools/LogTester.h>
 #include <opendnp3/APL/PhysicalLayerAsyncTCPv4Client.h>
 #include <opendnp3/APL/PhysicalLayerAsyncTCPv4Server.h>
+#include <opendnp3/APL/PhysicalLayerAsyncUDPClient.h>
+#include <opendnp3/APL/PhysicalLayerAsyncUDPServer.h>
 #include <opendnp3/APL/LowerLayerToPhysAdapter.h>
 #include <APLTestTools/MockUpperLayer.h>
 
@@ -42,11 +44,21 @@ public:
 	PhysicalLayerAsyncTCPv4Client mTCPClient;
 	PhysicalLayerAsyncTCPv4Server mTCPServer;
 
-	LowerLayerToPhysAdapter mClientAdapter;
-	LowerLayerToPhysAdapter mServerAdapter;
+	PhysicalLayerAsyncUDPClient mUDPClient;
+	PhysicalLayerAsyncUDPServer mUDPServer;
 
-	MockUpperLayer mClientUpper;
-	MockUpperLayer mServerUpper;
+	LowerLayerToPhysAdapter mTCPClientAdapter;
+	LowerLayerToPhysAdapter mTCPServerAdapter;
+
+	LowerLayerToPhysAdapter mUDPClientAdapter;
+	LowerLayerToPhysAdapter mUDPServerAdapter;
+
+	MockUpperLayer mTCPClientUpper;
+	MockUpperLayer mTCPServerUpper;
+
+	MockUpperLayer mUDPClientUpper;
+	MockUpperLayer mUDPServerUpper;
+
 };
 
 }

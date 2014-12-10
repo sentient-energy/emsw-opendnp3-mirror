@@ -22,6 +22,7 @@
 #include <opendnp3/APL/PhysicalLayerMap.h>
 #include <opendnp3/APL/SerialTypes.h>
 #include <opendnp3/APL/TcpSettings.h>
+#include <opendnp3/APL/UdpSettings.h>
 
 namespace apl
 {
@@ -42,6 +43,10 @@ public:
 	void AddTCPv4Server(const std::string& arName, PhysLayerSettings, TcpSettings);
 	void AddTCPv6Client(const std::string& arName, PhysLayerSettings, TcpSettings);
 	void AddTCPv6Server(const std::string& arName, PhysLayerSettings, TcpSettings);
+	void AddUDPv4Client(const std::string& arName, PhysLayerSettings, UdpSettings);
+	void AddUDPv4Server(const std::string& arName, PhysLayerSettings, UdpSettings);
+	void AddUDPv6Client(const std::string& arName, PhysLayerSettings, UdpSettings);
+	void AddUDPv6Server(const std::string& arName, PhysLayerSettings, UdpSettings);
 	void AddSerial(const std::string& arName, PhysLayerSettings, SerialSettings);
 	void AddPhysicalLayer(const std::string& arName, PhysLayerSettings, IPhysicalLayerAsync*);
 

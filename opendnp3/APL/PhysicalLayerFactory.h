@@ -23,6 +23,7 @@
 #include <opendnp3/APL/PhysicalLayerFunctors.h>
 #include <opendnp3/APL/SerialTypes.h>
 #include <opendnp3/APL/TcpSettings.h>
+#include <opendnp3/APL/UdpSettings.h>
 
 #include <boost/cstdint.hpp>
 #include <map>
@@ -39,6 +40,10 @@ public:
 	static IPhysicalLayerAsyncFactory GetTCPv4ServerAsync(TcpSettings s);
 	static IPhysicalLayerAsyncFactory GetTCPv6ClientAsync(TcpSettings s);
 	static IPhysicalLayerAsyncFactory GetTCPv6ServerAsync(TcpSettings s);
+	static IPhysicalLayerAsyncFactory GetUDPv4ClientAsync(UdpSettings s);
+	static IPhysicalLayerAsyncFactory GetUDPv4ServerAsync(UdpSettings s);
+	static IPhysicalLayerAsyncFactory GetUDPv6ClientAsync(UdpSettings s);
+	static IPhysicalLayerAsyncFactory GetUDPv6ServerAsync(UdpSettings s);
 
 	//normal factory functions
 	static IPhysicalLayerAsync* FGetSerialAsync(SerialSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
@@ -46,6 +51,11 @@ public:
 	static IPhysicalLayerAsync* FGetTCPv4ServerAsync(TcpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
 	static IPhysicalLayerAsync* FGetTCPv6ClientAsync(TcpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
 	static IPhysicalLayerAsync* FGetTCPv6ServerAsync(TcpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
+	static IPhysicalLayerAsync* FGetUDPv4ClientAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
+	static IPhysicalLayerAsync* FGetUDPv4ServerAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
+	static IPhysicalLayerAsync* FGetUDPv6ClientAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
+	static IPhysicalLayerAsync* FGetUDPv6ServerAsync(UdpSettings s, boost::asio::io_service* apSrv, Logger* apLogger);
+
 };
 
 }

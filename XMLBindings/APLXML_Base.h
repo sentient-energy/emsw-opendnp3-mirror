@@ -104,6 +104,7 @@ public:
 	int SendBufferSize;
 	int RecvBufferSize;
 };
+
 class TCPv6Server_t : public APLXML_Base::PhysicalLayerDescriptor_t{
 public:
 	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
@@ -111,6 +112,46 @@ public:
 	string Endpoint;
 	int Port;
 	bool UseKeepAlives;
+	int SendBufferSize;
+	int RecvBufferSize;
+};
+
+class UDPv4Client_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+public:
+	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
+	void fromXml(TiXmlNode* pNode);
+	string Address;
+	int Port;
+	int SendBufferSize;
+	int RecvBufferSize;
+};
+
+class UDPv4Server_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+public:
+	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
+	void fromXml(TiXmlNode* pNode);
+	string Endpoint;
+	int Port;
+	int SendBufferSize;
+	int RecvBufferSize;
+};
+
+class UDPv6Client_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+public:
+	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
+	void fromXml(TiXmlNode* pNode);
+	string Address;
+	int Port;
+	int SendBufferSize;
+	int RecvBufferSize;
+};
+
+class UDPv6Server_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+public:
+	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
+	void fromXml(TiXmlNode* pNode);
+	string Endpoint;
+	int Port;
 	int SendBufferSize;
 	int RecvBufferSize;
 };
@@ -184,6 +225,28 @@ public:
 #endif
 	private: collectedType < TCPv6Client_t > TCPv6Client;
 	public: vector < TCPv6Client_t* >& TCPv6ClientVector;
+
+#ifdef SWIG
+%immutable UDPv4ServerVector;
+#endif
+	private: collectedType < UDPv4Server_t > UDPv4Server;
+	public: vector < UDPv4Server_t* >& UDPv4ServerVector;
+#ifdef SWIG
+%immutable UDPv4ClientVector;
+#endif
+	private: collectedType < UDPv4Client_t > UDPv4Client;
+	public: vector < UDPv4Client_t* >& UDPv4ClientVector;
+
+#ifdef SWIG
+%immutable UDPv6ServerVector;
+#endif
+	private: collectedType < UDPv6Server_t > UDPv6Server;
+	public: vector < UDPv6Server_t* >& UDPv6ServerVector;
+#ifdef SWIG
+%immutable UDPv6ClientVector;
+#endif
+	private: collectedType < UDPv6Client_t > UDPv6Client;
+	public: vector < UDPv6Client_t* >& UDPv6ClientVector;
 
 #ifdef SWIG
 %immutable SerialVector;

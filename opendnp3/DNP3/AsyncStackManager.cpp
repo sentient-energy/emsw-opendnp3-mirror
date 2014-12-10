@@ -113,6 +113,40 @@ void AsyncStackManager::AddTCPv6Server(const std::string& arName, PhysLayerSetti
 	mMgr.AddTCPv6Server(arName, aSettings, aTcp);
 }
 
+void AsyncStackManager::AddUDPClient(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	AddUDPv4Client(arName, aSettings, aUdp);
+}
+
+void AsyncStackManager::AddUDPv4Client(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	this->ThrowIfAlreadyShutdown();
+	mMgr.AddUDPv4Client(arName, aSettings, aUdp);
+}
+
+void AsyncStackManager::AddUDPServer(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	AddUDPv4Server(arName, aSettings, aUdp);
+}
+
+void AsyncStackManager::AddUDPv4Server(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	this->ThrowIfAlreadyShutdown();
+	mMgr.AddUDPv4Server(arName, aSettings, aUdp);
+}
+
+void AsyncStackManager::AddUDPv6Client(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	this->ThrowIfAlreadyShutdown();
+	mMgr.AddUDPv6Client(arName, aSettings, aUdp);
+}
+
+void AsyncStackManager::AddUDPv6Server(const std::string& arName, PhysLayerSettings aSettings, UdpSettings aUdp)
+{
+	this->ThrowIfAlreadyShutdown();
+	mMgr.AddUDPv6Server(arName, aSettings, aUdp);
+}
+
 void AsyncStackManager::AddSerial(const std::string& arName, PhysLayerSettings aSettings, SerialSettings aSerial)
 {
 	this->ThrowIfAlreadyShutdown();

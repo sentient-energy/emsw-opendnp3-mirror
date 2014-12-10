@@ -325,6 +325,7 @@ void TCPv6Server_t :: fromXml(TiXmlNode* pNode){
 
 	valid=true;
 };
+
 void TCPv6Server_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
 	if(!aIgnoreValid && !valid) return;
 	TiXmlElement * pEm;
@@ -338,6 +339,158 @@ void TCPv6Server_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreVa
 	pEm->SetAttribute("Endpoint", ToString_string(Endpoint));
 	pEm->SetAttribute("Port", ToString_int(Port));
 	pEm->SetAttribute("UseKeepAlives", ToString_bool(UseKeepAlives));
+	pEm->SetAttribute("SendBufferSize", ToString_int(SendBufferSize));
+	pEm->SetAttribute("RecvBufferSize", ToString_int(RecvBufferSize));
+};
+
+void UDPv4Client_t :: fromXml(TiXmlNode* pNode){
+	if(pNode == NULL)return;
+	XML_CHECK("UDPClient",pNode->Type() == TiXmlNode::ELEMENT);
+	TiXmlElement* pEm = pNode->ToElement();
+	XML_CHECK("UDPClient",pEm != 0);
+	this->APLXML_Base::PhysicalLayerDescriptor_t::fromXml(pNode);
+	Address = FromString_string(pEm, pEm->Attribute("Address"));
+	Port = FromString_int(pEm, pEm->Attribute("Port"));
+
+	SendBufferSize = 0;
+	if (pEm->Attribute("SendBufferSize")) {
+		SendBufferSize = FromString_int(pEm, pEm->Attribute("SendBufferSize"));
+	}
+
+	RecvBufferSize = 0;
+	if (pEm->Attribute("RecvBufferSize")) {
+		RecvBufferSize = FromString_int(pEm, pEm->Attribute("RecvBufferSize"));
+	}
+
+	valid=true;
+};
+
+void UDPv4Client_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
+	if(!aIgnoreValid && !valid) return;
+	TiXmlElement * pEm;
+	if(aCreateNode){
+		pEm = new TiXmlElement("UDPClient");
+		pParent->LinkEndChild(pEm);
+	}else{
+		pEm = pParent->ToElement();
+	}
+	this->APLXML_Base::PhysicalLayerDescriptor_t::toXml(pEm, false, aIgnoreValid);
+	pEm->SetAttribute("Address", ToString_string(Address));
+	pEm->SetAttribute("Port", ToString_int(Port));
+	pEm->SetAttribute("SendBufferSize", ToString_int(SendBufferSize));
+	pEm->SetAttribute("RecvBufferSize", ToString_int(RecvBufferSize));
+};
+
+void UDPv4Server_t :: fromXml(TiXmlNode* pNode){
+	if(pNode == NULL)return;
+	XML_CHECK("UDPServer",pNode->Type() == TiXmlNode::ELEMENT);
+	TiXmlElement* pEm = pNode->ToElement();
+	XML_CHECK("UDPServer",pEm != 0);
+	this->APLXML_Base::PhysicalLayerDescriptor_t::fromXml(pNode);
+	Endpoint = FromString_string(pEm, pEm->Attribute("Endpoint"));
+	Port = FromString_int(pEm, pEm->Attribute("Port"));
+
+	SendBufferSize = 0;
+	if (pEm->Attribute("SendBufferSize")) {
+		SendBufferSize = FromString_int(pEm, pEm->Attribute("SendBufferSize"));
+	}
+
+	RecvBufferSize = 0;
+	if (pEm->Attribute("RecvBufferSize")) {
+		RecvBufferSize = FromString_int(pEm, pEm->Attribute("RecvBufferSize"));
+	}
+
+	valid=true;
+};
+
+void UDPv4Server_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
+	if(!aIgnoreValid && !valid) return;
+	TiXmlElement * pEm;
+	if(aCreateNode){
+		pEm = new TiXmlElement("UDPServer");
+		pParent->LinkEndChild(pEm);
+	}else{
+		pEm = pParent->ToElement();
+	}
+	this->APLXML_Base::PhysicalLayerDescriptor_t::toXml(pEm, false, aIgnoreValid);
+	pEm->SetAttribute("Endpoint", ToString_string(Endpoint));
+	pEm->SetAttribute("Port", ToString_int(Port));
+	pEm->SetAttribute("SendBufferSize", ToString_int(SendBufferSize));
+	pEm->SetAttribute("RecvBufferSize", ToString_int(RecvBufferSize));
+};
+
+void UDPv6Client_t :: fromXml(TiXmlNode* pNode){
+	if(pNode == NULL)return;
+	XML_CHECK("UDPv6Client",pNode->Type() == TiXmlNode::ELEMENT);
+	TiXmlElement* pEm = pNode->ToElement();
+	XML_CHECK("UDPv6Client",pEm != 0);
+	this->APLXML_Base::PhysicalLayerDescriptor_t::fromXml(pNode);
+	Address = FromString_string(pEm, pEm->Attribute("Address"));
+	Port = FromString_int(pEm, pEm->Attribute("Port"));
+
+	SendBufferSize = 0;
+	if (pEm->Attribute("SendBufferSize")) {
+		SendBufferSize = FromString_int(pEm, pEm->Attribute("SendBufferSize"));
+	}
+
+	RecvBufferSize = 0;
+	if (pEm->Attribute("RecvBufferSize")) {
+		RecvBufferSize = FromString_int(pEm, pEm->Attribute("RecvBufferSize"));
+	}
+
+	valid=true;
+};
+
+void UDPv6Client_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
+	if(!aIgnoreValid && !valid) return;
+	TiXmlElement * pEm;
+	if(aCreateNode){
+		pEm = new TiXmlElement("UDPv6Client");
+		pParent->LinkEndChild(pEm);
+	}else{
+		pEm = pParent->ToElement();
+	}
+	this->APLXML_Base::PhysicalLayerDescriptor_t::toXml(pEm, false, aIgnoreValid);
+	pEm->SetAttribute("Address", ToString_string(Address));
+	pEm->SetAttribute("Port", ToString_int(Port));
+	pEm->SetAttribute("SendBufferSize", ToString_int(SendBufferSize));
+	pEm->SetAttribute("RecvBufferSize", ToString_int(RecvBufferSize));
+};
+
+void UDPv6Server_t :: fromXml(TiXmlNode* pNode){
+	if(pNode == NULL)return;
+	XML_CHECK("UDPv6Server",pNode->Type() == TiXmlNode::ELEMENT);
+	TiXmlElement* pEm = pNode->ToElement();
+	XML_CHECK("UDPv6Server",pEm != 0);
+	this->APLXML_Base::PhysicalLayerDescriptor_t::fromXml(pNode);
+	Endpoint = FromString_string(pEm, pEm->Attribute("Endpoint"));
+	Port = FromString_int(pEm, pEm->Attribute("Port"));
+
+	SendBufferSize = 0;
+	if (pEm->Attribute("SendBufferSize")) {
+		SendBufferSize = FromString_int(pEm, pEm->Attribute("SendBufferSize"));
+	}
+
+	RecvBufferSize = 0;
+	if (pEm->Attribute("RecvBufferSize")) {
+		RecvBufferSize = FromString_int(pEm, pEm->Attribute("RecvBufferSize"));
+	}
+
+	valid=true;
+};
+
+void UDPv6Server_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
+	if(!aIgnoreValid && !valid) return;
+	TiXmlElement * pEm;
+	if(aCreateNode){
+		pEm = new TiXmlElement("UDPv6Server");
+		pParent->LinkEndChild(pEm);
+	}else{
+		pEm = pParent->ToElement();
+	}
+	this->APLXML_Base::PhysicalLayerDescriptor_t::toXml(pEm, false, aIgnoreValid);
+	pEm->SetAttribute("Endpoint", ToString_string(Endpoint));
+	pEm->SetAttribute("Port", ToString_int(Port));
 	pEm->SetAttribute("SendBufferSize", ToString_int(SendBufferSize));
 	pEm->SetAttribute("RecvBufferSize", ToString_int(RecvBufferSize));
 };
@@ -399,7 +552,12 @@ PhysicalLayerList_t::PhysicalLayerList_t():
 		TCPv4Client("TCPClient"), TCPv4ClientVector(TCPv4Client.collection),
 		TCPv6Server("TCPv6Server"), TCPv6ServerVector(TCPv6Server.collection),
 		TCPv6Client("TCPv6Client"), TCPv6ClientVector(TCPv6Client.collection),
+		UDPv4Server("UDPServer"), UDPv4ServerVector(UDPv4Server.collection),
+		UDPv4Client("UDPClient"), UDPv4ClientVector(UDPv4Client.collection),
+		UDPv6Server("UDPv6Server"), UDPv6ServerVector(UDPv6Server.collection),
+		UDPv6Client("UDPv6Client"), UDPv6ClientVector(UDPv6Client.collection),
 		Serial("Serial"), SerialVector(Serial.collection){};
+
 void PhysicalLayerList_t :: fromXml(TiXmlNode* pNode){
 	if(pNode == NULL)return;
 	XML_CHECK("PhysicalLayerList",pNode->Type() == TiXmlNode::ELEMENT);
@@ -409,11 +567,24 @@ void PhysicalLayerList_t :: fromXml(TiXmlNode* pNode){
 	TCPv4Client.fromXml(pNode);
 	TCPv6Server.fromXml(pNode);
 	TCPv6Client.fromXml(pNode);
+	UDPv4Server.fromXml(pNode);
+	UDPv4Client.fromXml(pNode);
+	UDPv6Server.fromXml(pNode);
+	UDPv6Client.fromXml(pNode);
 	Serial.fromXml(pNode);
 	valid=true;
 };
+
 void PhysicalLayerList_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid){
-	if(TCPv4Server.size() == 0 && TCPv4Client.size() == 0 && TCPv6Server.size() == 0 && TCPv6Client.size() == 0 && Serial.size() == 0)return;
+	if(TCPv4Server.size() == 0 && TCPv4Client.size() == 0 &&
+	   TCPv6Server.size() == 0 && TCPv6Client.size() == 0 &&
+	   UDPv4Server.size() == 0 && UDPv4Client.size() == 0 &&
+	   UDPv6Server.size() == 0 && UDPv6Client.size() == 0 &&
+	   Serial.size() == 0) {
+
+		return;
+	}
+
 	if(!aIgnoreValid && !valid) return;
 	TiXmlElement * pEm;
 	if(aCreateNode){
@@ -426,6 +597,10 @@ void PhysicalLayerList_t :: toXml(TiXmlNode* pParent, bool aCreateNode, bool aIg
 	TCPv4Client.toXml(pEm, true, aIgnoreValid);
 	TCPv6Server.toXml(pEm, true, aIgnoreValid);
 	TCPv6Client.toXml(pEm, true, aIgnoreValid);
+	UDPv4Server.toXml(pEm, true, aIgnoreValid);
+	UDPv4Client.toXml(pEm, true, aIgnoreValid);
+	UDPv6Server.toXml(pEm, true, aIgnoreValid);
+	UDPv6Client.toXml(pEm, true, aIgnoreValid);
 	Serial.toXml(pEm, true, aIgnoreValid);
 };
 

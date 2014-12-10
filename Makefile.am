@@ -60,9 +60,12 @@ libopendnp3_la_SOURCES = \
 	opendnp3/APL/Parsing.cpp \
 	opendnp3/APL/PhysicalLayerAsyncBase.cpp \
 	opendnp3/APL/PhysicalLayerAsyncBaseTCP.cpp \
+	opendnp3/APL/PhysicalLayerAsyncBaseUDP.cpp \
 	opendnp3/APL/PhysicalLayerAsyncSerial.cpp \
 	opendnp3/APL/PhysicalLayerAsyncTCPClient.cpp \
 	opendnp3/APL/PhysicalLayerAsyncTCPServer.cpp \
+	opendnp3/APL/PhysicalLayerAsyncUDPClient.cpp \
+	opendnp3/APL/PhysicalLayerAsyncUDPServer.cpp \
 	opendnp3/APL/PhysicalLayerFactory.cpp \
 	opendnp3/APL/PhysicalLayerInstance.cpp \
 	opendnp3/APL/PhysicalLayerManager.cpp \
@@ -422,6 +425,7 @@ aplheaders_HEADERS = \
 	opendnp3/APL/ToHex.h \
 	opendnp3/APL/TrackingTaskGroup.h \
 	opendnp3/APL/Types.h \
+	opendnp3/APL/UdpSettings.h \
 	opendnp3/APL/Uncopyable.h \
 	opendnp3/APL/Util.h
 
@@ -557,7 +561,29 @@ testset_SOURCES = \
 	tinyxml/tinyxmlerror.cpp \
 	tinyxml/tinyxmlparser.cpp
 
-noinst_PROGRAMS = dnp3test demo-master-cpp demo-slave-cpp
+noinst_PROGRAMS = apltest dnp3test demo-master-cpp demo-slave-cpp
+
+apltest_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
+apltest_SOURCES = \
+	APLTest/TestPhysicalLayerAsyncUDP.cpp \
+	APLTest/TestStartBoostUTF.cpp \
+	APLTestTools/AsyncPhysTestObject.cpp \
+	APLTestTools/AsyncTestObjectASIO.cpp \
+	APLTestTools/AsyncTestObject.cpp \
+	APLTestTools/BufferHelpers.cpp \
+	APLTestTools/BufferTestObject.cpp \
+	APLTestTools/LogTester.cpp \
+	APLTestTools/LoopbackPhysicalLayerAsync.cpp \
+	APLTestTools/MockLowerLayer.cpp \
+	APLTestTools/MockPhysicalLayerAsync.cpp \
+	APLTestTools/MockPhysicalLayerAsyncTS.cpp \
+	APLTestTools/MockPhysicalLayerMonitor.cpp \
+	APLTestTools/MockPhysicalLayerSource.cpp \
+	APLTestTools/MockResponseAcceptor.cpp \
+	APLTestTools/MockTimerSource.cpp \
+	APLTestTools/MockUpperLayer.cpp \
+	APLTestTools/PhysicalLayerWrapper.cpp \
+	APLTestTools/WrappedTcpPipe.cpp
 
 dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
 dnp3test_SOURCES = \

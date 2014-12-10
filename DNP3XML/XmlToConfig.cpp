@@ -66,6 +66,26 @@ bool XmlToConfig::Configure(const APLXML_Base::PhysicalLayerList_t& arList, Filt
 		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);
 		arMgr.AddTCPv6Server(pCfg->Name, s, xml::GetTcpV6ServerSettings(pCfg));
 	}
+	for (size_t i = 0; i < arList.UDPv4ClientVector.size(); i++ ) {
+		UDPv4Client_t* pCfg = arList.UDPv4ClientVector[i];
+		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);
+		arMgr.AddUDPv4Client(pCfg->Name, s, xml::GetUdpV4ClientSettings(pCfg));
+	}
+	for (size_t i = 0; i < arList.UDPv4ServerVector.size(); i++ ) {
+		UDPv4Server_t* pCfg = arList.UDPv4ServerVector[i];
+		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);
+		arMgr.AddUDPv4Server(pCfg->Name, s, xml::GetUdpV4ServerSettings(pCfg));
+	}
+	for (size_t i = 0; i < arList.UDPv6ClientVector.size(); i++ ) {
+		UDPv6Client_t* pCfg = arList.UDPv6ClientVector[i];
+		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);
+		arMgr.AddUDPv6Client(pCfg->Name, s, xml::GetUdpV6ClientSettings(pCfg));
+	}
+	for (size_t i = 0; i < arList.UDPv6ServerVector.size(); i++ ) {
+		UDPv6Server_t* pCfg = arList.UDPv6ServerVector[i];
+		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);
+		arMgr.AddUDPv6Server(pCfg->Name, s, xml::GetUdpV6ServerSettings(pCfg));
+	}
 	for (size_t i = 0; i < arList.SerialVector.size(); i++ ) {
 		Serial_t* pCfg = arList.SerialVector[i];
 		PhysLayerSettings s(aLevel, pCfg->OpenRetryMS);

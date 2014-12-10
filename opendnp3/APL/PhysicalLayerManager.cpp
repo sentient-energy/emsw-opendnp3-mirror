@@ -87,6 +87,34 @@ void PhysicalLayerManager ::AddTCPv6Server(const std::string& arName, PhysLayerS
 	this->AddLayer(arName, s, pli);
 }
 
+void PhysicalLayerManager ::AddUDPv4Client(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	IPhysicalLayerAsyncFactory fac = PhysicalLayerFactory::GetUDPv4ClientAsync(aUdp);
+	PhysLayerInstance pli(fac);
+	this->AddLayer(arName, s, pli);
+}
+
+void PhysicalLayerManager ::AddUDPv4Server(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	IPhysicalLayerAsyncFactory fac = PhysicalLayerFactory::GetUDPv4ServerAsync(aUdp);
+	PhysLayerInstance pli(fac);
+	this->AddLayer(arName, s, pli);
+}
+
+void PhysicalLayerManager ::AddUDPv6Client(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	IPhysicalLayerAsyncFactory fac = PhysicalLayerFactory::GetUDPv6ClientAsync(aUdp);
+	PhysLayerInstance pli(fac);
+	this->AddLayer(arName, s, pli);
+}
+
+void PhysicalLayerManager ::AddUDPv6Server(const std::string& arName, PhysLayerSettings s, UdpSettings aUdp)
+{
+	IPhysicalLayerAsyncFactory fac = PhysicalLayerFactory::GetUDPv6ServerAsync(aUdp);
+	PhysLayerInstance pli(fac);
+	this->AddLayer(arName, s, pli);
+}
+
 void PhysicalLayerManager ::AddSerial(const std::string& arName, PhysLayerSettings s, SerialSettings aSerial)
 {
 	IPhysicalLayerAsyncFactory fac = PhysicalLayerFactory::GetSerialAsync(aSerial);
