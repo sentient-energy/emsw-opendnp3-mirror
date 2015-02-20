@@ -1,3 +1,17 @@
+opendnp3 (1.2.0-0sentient0) unstable; urgency=medium
+
+  * Reduced VTO buffering to better reflect network performance
+    to user apps.
+  * Exposed the ability to configure the VtoWriterQueueSize for the Master.
+  * Exposed the ability to configure the TCP send and receive buffer size.
+  * Added the ability to clear the need time flag on the outstation through a
+    IIN write.
+  * Added UDP as a physical layer option.
+  * Fixed bug that caused Binary Input Event (Gr2Var2) timestamp to always be
+    0.
+
+ -- Hung Le <hle@sentient-energy.com>  Fri, 20 Feb 2015 15:44:00 -0800
+
 opendnp3 (1.1.3-0sentient0) unstable; urgency=low
 
   * Fixed incorrect handling of socket open failure when an async
