@@ -12,7 +12,7 @@ using namespace apl::dnp;
 
 %pragma(java) jniclasscode=%{
   static {
-    if(System.getProperty("org.totalgrid.reef.protocol.dnp3.nostaticload") == null) System.loadLibrary("dnp3java");    
+    if(System.getProperty("org.totalgrid.reef.protocol.dnp3.nostaticload") == null) System.loadLibrary("dnp3java");
   }
 %}
 
@@ -70,6 +70,8 @@ namespace apl{
 %include <opendnp3/APL/SerialTypes.h>
 %include <opendnp3/APL/QualityMasks.h>
 %include <opendnp3/APL/CommandTypes.h>
+%include <opendnp3/APL/TcpSettings.h>
+%include <opendnp3/APL/UdpSettings.h>
 
 %include <opendnp3/APL/BaseDataTypes.h>
 %template(DoublePoint) apl::TypedDataPoint<double>;
