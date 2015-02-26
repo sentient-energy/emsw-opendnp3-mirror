@@ -145,7 +145,7 @@ void IgnoresStartOne::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 
 void IgnoresReadWrite::OnReadWriteFailure(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring OnReceiveFailure(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring OnReadWriteFailure(): " << this->Name());
 }
 
 /* --- OpenFailureCausesWait --- */
