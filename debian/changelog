@@ -1,3 +1,12 @@
+opendnp3 (1.2.1-0sentient0) unstable; urgency=low
+
+  * Added error handling for read/write error on an opened physical layer.
+    The open retry timer is now properly respected when attempting to
+    recover from a read/write error and not only on initial open
+    attempts.
+
+ -- Hung Le <hle@sentient-energy.com>  Thurs, 26 Feb 2015 12:57:00 -0800
+
 opendnp3 (1.2.0-0sentient0) unstable; urgency=medium
 
   * Reduced VTO buffering to better reflect network performance

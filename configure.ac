@@ -1,4 +1,4 @@
-AC_INIT([opendnp3], [1.2.0], [open-dnp3@googlegroups.com])
+AC_INIT([opendnp3], [1.2.1], [open-dnp3@googlegroups.com])
 AC_COPYRIGHT([(C) 2010, 2011 Green Energy Corp.  All rights reserved.])
 
 srcdir="`cd $srcdir; pwd`"
