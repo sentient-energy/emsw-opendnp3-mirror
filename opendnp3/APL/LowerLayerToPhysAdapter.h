@@ -35,16 +35,15 @@ public:
 	LowerLayerToPhysAdapter(Logger*, IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
 
-	size_t GetNumOpenFailure() {
-		return mNumOpenFailure;
+	size_t GetNumFailure() {
+		return mNumFailure;
 	}
+
 	bool OpenFailureEquals(size_t aNum) {
-		return GetNumOpenFailure() == aNum;
+		return GetNumFailure() == aNum;
 	}
 
 	void StartRead();
-
-
 
 private:
 
@@ -56,7 +55,7 @@ private:
 	}
 
 	bool mAutoRead;
-	size_t mNumOpenFailure;
+	size_t mNumFailure;
 
 	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
 
@@ -64,6 +63,7 @@ private:
 
 	/* Implement IAsyncHandler */
 	void _OnOpenFailure();
+	void _OnReadWriteFailure();
 
 	/* Implement IUpperLayer */
 	void _OnReceive(const boost::uint8_t*, size_t);

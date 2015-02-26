@@ -67,6 +67,7 @@ private:
 	void _OnSendSuccess();
 	void _OnSendFailure();
 	void _OnOpenFailure();
+	void _OnReadWriteFailure();
 
 	double mCorruptionProbability;
 	RandomDouble mRandom;

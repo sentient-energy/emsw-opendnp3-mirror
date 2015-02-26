@@ -34,4 +34,9 @@ void IHandlerAsync::OnOpenFailure()
 	this->_OnOpenFailure();
 }
 
+void IHandlerAsync::OnReadWriteFailure()
+{
+	this->_OnReadWriteFailure();
+}
+
 }

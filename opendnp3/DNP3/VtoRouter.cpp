@@ -174,6 +174,13 @@ void VtoRouter::OnPhysicalLayerOpenFailureCallback()
 	this->CheckForVtoWrite();
 }
 
+void VtoRouter::OnPhysicalLayerReadWriteFailureCallback()
+{
+	this->SetLocalConnected(false);
+	this->CheckForPhysWrite();
+	this->CheckForVtoWrite();
+}
+
 void VtoRouter::OnPhysicalLayerCloseCallback()
 {
 	this->SetLocalConnected(false);

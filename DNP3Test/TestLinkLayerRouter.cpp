@@ -103,12 +103,15 @@ BOOST_AUTO_TEST_CASE(CloseBehavior)
 	BOOST_REQUIRE(mfs.mLowerOnline);
 	t.phys.SignalReadFailure();
 
-	// now the layer should go offline, this should clear the transmitt queue,
-	// the router should also try to restart
+	// now the layer should go offline, this should clear the transmit queue,
 	BOOST_REQUIRE_FALSE(mfs.mLowerOnline);
 
 	t.phys.ClearBuffer();
 
+	// Sleep the minimum retry timeout used by the router and dispatch the open
+	// retry timer to trigger restart
+	sleep(1);
+	t.mts.Dispatch(1);
 	t.phys.SignalOpenSuccess();
 
 	LinkFrame f2; f2.FormatAck(true, false, 1, 1024);

@@ -46,6 +46,7 @@ private:
 
 	void OnPhysicalLayerOpenSuccessCallback(void);
 	void OnPhysicalLayerOpenFailureCallback(void) {}
+	void OnPhysicalLayerReadWriteFailureCallback(void) {}
 	void OnPhysicalLayerCloseCallback(void) {}
 
 	void StartRead();

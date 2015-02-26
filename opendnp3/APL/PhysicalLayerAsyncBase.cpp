@@ -37,7 +37,8 @@ PhysicalLayerAsyncBase::State::State() :
 	mOpening(false),
 	mReading(false),
 	mWriting(false),
-	mClosing(false)
+	mClosing(false),
+	mError(false)
 {}
 
 bool PhysicalLayerAsyncBase::State::IsOpen() const
@@ -70,6 +71,11 @@ bool PhysicalLayerAsyncBase::State::IsClosed() const
 	return !(mOpening || mOpen || mClosing || mReading || mWriting);
 }
 
+bool PhysicalLayerAsyncBase::State::HasError() const
+{
+	return mError;
+}
+
 bool PhysicalLayerAsyncBase::State::CanOpen() const
 {
 	return this->IsClosed();
@@ -97,7 +103,8 @@ bool PhysicalLayerAsyncBase::State::CallbacksPending() const
 
 bool PhysicalLayerAsyncBase::State::CheckForClose()
 {
-	if(mClosing && !this->CallbacksPending()) {
+	//std::cout << "CheckForClose: " << ConvertStateToString() << std::endl;
+	if (mClosing && !this->CallbacksPending()) {
 		mClosing = mOpen = false;
 		return true;
 	}
@@ -202,12 +209,12 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arE
 			if(this->IsClosing()) { // but the connection was closed
 				mState.CheckForClose();
 				this->DoClose();
-				if(mpHandler) mpHandler->OnOpenFailure();
+				if (mpHandler) mpHandler->OnOpenFailure();
 			}
 			else {
 				mState.mOpen = true;
 				this->DoOpenSuccess();
-				if(mpHandler) mpHandler->OnLowerLayerUp();
+				if (mpHandler) mpHandler->OnLowerLayerUp();
 			}
 		}
 	}
@@ -219,9 +226,15 @@ void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arE
 	if(mState.mReading) {
 		mState.mReading = false;
 
-		if(arErr) {
+		if (arErr) {
+			//std::cout << "ReadCallback: " << arErr.message() << std::endl;
+			if (arErr != boost::system::errc::operation_canceled && !mState.IsClosing()) {
+				mState.mError = true;
+				//std::cout << "Received error set" << std::endl;
+			}
+
 			LOG_BLOCK(LEV_WARNING, arErr.message());
-			if(mState.CanClose()) this->StartClose();
+			if (mState.CanClose()) this->StartClose();
 		}
 		else {
 			if(mState.mClosing) {
@@ -242,9 +255,12 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& ar
 	if(mState.mWriting) {
 		mState.mWriting = false;
 
-		if(arErr) {
+		if (arErr) {
+			if (arErr != boost::system::errc::operation_canceled && !mState.IsClosing()) {
+				mState.mError = true;
+			}
 			LOG_BLOCK(LEV_WARNING, arErr.message());
-			if(mState.CanClose()) this->StartClose();
+			if (mState.CanClose()) this->StartClose();
 		}
 		else {
 			if(mState.mClosing) {
@@ -255,7 +271,7 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& ar
 			}
 		}
 
-		if(mState.CheckForClose()) this->DoThisLayerDown();
+		if (mState.CheckForClose()) this->DoThisLayerDown();
 	}
 	else throw InvalidStateException(LOCATION, "OnWriteCallback: " + this->ConvertStateToString());
 }
@@ -271,7 +287,13 @@ void PhysicalLayerAsyncBase::DoWriteSuccess()
 
 void PhysicalLayerAsyncBase::DoThisLayerDown()
 {
+	//std::cout << "DoThisLayerDown" << std::endl;
+	// Notify of closing due to read/write error
+	if (mState.mError && mpHandler) mpHandler->OnReadWriteFailure();
+
 	if(mpHandler) mpHandler->OnLowerLayerDown();
+
+	mState.mError = false;
 }
 
 void PhysicalLayerAsyncBase::DoReadCallback(boost::uint8_t* apBuff, size_t aNumBytes)

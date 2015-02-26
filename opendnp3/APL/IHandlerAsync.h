@@ -30,14 +30,16 @@ public:
 	IHandlerAsync(Logger*);
 	virtual ~IHandlerAsync() {}
 
-	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
+	// In addition to all of the IUpperLayer functions, provide a mechanism to receive failures
 	// For consistency sake, use NVII pattern in case we want pre/post conditions in the future
 	void OnOpenFailure();
+	void OnReadWriteFailure();
 
 private:
 
 	// called when the layer didn't make a connection and has given up trying, safe to delete.
 	virtual void _OnOpenFailure() = 0;
+	virtual void _OnReadWriteFailure() = 0;
 };
 
 }

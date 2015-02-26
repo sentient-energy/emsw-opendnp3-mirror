@@ -43,6 +43,7 @@ class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
 		bool mReading;
 		bool mWriting;
 		bool mClosing;
+		bool mError;
 
 		bool IsOpen() const;
 		bool IsOpening() const;
@@ -50,6 +51,7 @@ class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
 		bool IsWriting() const;
 		bool IsClosing() const;
 		bool IsClosed() const;
+		bool HasError() const;
 
 		bool CanOpen() const;
 		bool CanClose() const;

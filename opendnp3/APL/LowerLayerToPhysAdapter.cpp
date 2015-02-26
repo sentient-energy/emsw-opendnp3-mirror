@@ -27,7 +27,7 @@ LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger* apLogger, IPhysicalLaye
 	IHandlerAsync(apLogger),
 	ILowerLayer(apLogger),
 	mAutoRead(aAutoRead),
-	mNumOpenFailure(0),
+	mNumFailure(0),
 	mpPhys(apPhys)
 {
 	mpPhys->SetHandler(this);
@@ -46,8 +46,14 @@ void LowerLayerToPhysAdapter::StartRead()
 /* Implement IAsyncHandler */
 void LowerLayerToPhysAdapter::_OnOpenFailure()
 {
-	++mNumOpenFailure;
+	++mNumFailure;
 }
+
+void LowerLayerToPhysAdapter::_OnReadWriteFailure()
+{
+	++mNumFailure;
+}
+
 
 /* Implement IUpperLayer */
 void LowerLayerToPhysAdapter::_OnReceive(const boost::uint8_t* apData, size_t aNumBytes)

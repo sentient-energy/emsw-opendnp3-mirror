@@ -103,6 +103,7 @@ private:
 	// Implement virtual AsyncPhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
+	void OnPhysicalLayerReadWriteFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 
 	std::string RecvString() {

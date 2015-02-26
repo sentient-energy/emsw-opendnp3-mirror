@@ -98,6 +98,11 @@ void PhysicalLayerWrapper::_OnOpenFailure()
 	if(mpHandler) mpHandler->OnOpenFailure();
 }
 
+void PhysicalLayerWrapper::_OnReadWriteFailure()
+{
+	if(mpHandler) mpHandler->OnReadWriteFailure();
+}
+
 void PhysicalLayerWrapper::SetCorruptionProbability(double aProbability)
 {
 	mCorruptionProbability = aProbability;

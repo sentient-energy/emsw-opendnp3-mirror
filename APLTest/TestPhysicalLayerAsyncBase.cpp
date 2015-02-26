@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(CloseWhileOpening)
 	t.phys.SignalOpenSuccess();
 
 	BOOST_REQUIRE_EQUAL(0, t.upper.GetState().mNumLayerUp);
-	BOOST_REQUIRE_EQUAL(1, t.adapter.GetNumOpenFailure());
+	BOOST_REQUIRE_EQUAL(1, t.adapter.GetNumFailure());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

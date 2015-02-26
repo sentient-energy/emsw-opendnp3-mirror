@@ -47,6 +47,7 @@ public:
 
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
+	void OnPhysicalLayerReadWriteFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 
 	void _OnReceive(const boost::uint8_t* apData, size_t aNumBytes);

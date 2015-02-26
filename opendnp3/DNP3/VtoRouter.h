@@ -127,6 +127,8 @@ protected:
 
 	void OnPhysicalLayerOpenFailureCallback();
 
+	void OnPhysicalLayerReadWriteFailureCallback();
+
 	void OnPhysicalLayerCloseCallback();
 
 	/**

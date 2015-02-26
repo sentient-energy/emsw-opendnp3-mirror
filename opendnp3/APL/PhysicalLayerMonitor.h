@@ -78,6 +78,7 @@ protected:
 
 	virtual void OnPhysicalLayerOpenSuccessCallback() = 0;
 	virtual void OnPhysicalLayerOpenFailureCallback() = 0;
+	virtual void OnPhysicalLayerReadWriteFailureCallback() = 0;
 	virtual void OnPhysicalLayerCloseCallback() = 0;
 
 	/// Begins the open timer
@@ -112,6 +113,7 @@ private:
 
 	// Implement from IHandlerAsync - Try to reconnect using a timer
 	void _OnOpenFailure();
+	void _OnReadWriteFailure();
 	void _OnLowerLayerUp();
 	void _OnLowerLayerDown();
 

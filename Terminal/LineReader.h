@@ -31,6 +31,7 @@ private:
 	void Read();
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
+	void OnPhysicalLayerReadWriteFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 	void Reset();
 
