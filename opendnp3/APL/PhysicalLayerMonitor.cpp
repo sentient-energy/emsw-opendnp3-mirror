@@ -149,7 +149,7 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 
 void PhysicalLayerMonitor::_OnReadWriteFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnReadWriteFailure()");
+	LOG_BLOCK(LEV_DEBUG, "_OnReceiveFailure()");
 	mpState->OnReadWriteFailure(this);
 	this->OnPhysicalLayerReadWriteFailureCallback();
 }
