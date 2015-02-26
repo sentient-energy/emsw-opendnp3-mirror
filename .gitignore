@@ -39,9 +39,12 @@ opendnp3.jar
 /DNP.ncb
 /DNP.suo
 /DNP3Java/JavaDNP3_wrap.*
+/DNP3Java/TestBinding.class
 /DNP3Java/jar
 /DNP3Java/src
 /DNP3Java/target
+/DNP3Java/META-INF/
+/DNP3Java/org/
 /TestSet/*.xml
 /coverage-*
 /doc
