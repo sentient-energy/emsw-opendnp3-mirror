@@ -32,7 +32,8 @@ struct CommandData {
 	CommandData(apl::CommandTypes aType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor) :
 		mType(aType), mIndex(aIndex), mSequence(aSequence), mpRspAcceptor(apRspAcceptor) {}
 
-	CommandData() {}
+	CommandData() :
+		mType(CT_NONE), mIndex(0), mSequence(0), mpRspAcceptor(NULL) {}
 
 	apl::CommandTypes mType;
 	size_t mIndex;

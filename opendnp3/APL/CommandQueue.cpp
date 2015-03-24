@@ -91,10 +91,12 @@ bool CommandQueue::ExecuteCommand(ICommandHandler* apHandler)
 
 void CommandQueue::AcceptCommand(const apl::BinaryOutput& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
 {
+	assert(apRspAcceptor != NULL);
 	AcceptCommand<apl::BinaryOutput>(arType, aIndex, mBinaryQueue, aSequence, apRspAcceptor);
 }
 void CommandQueue::AcceptCommand(const apl::Setpoint& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
 {
+	assert(apRspAcceptor != NULL);
 	AcceptCommand<apl::Setpoint>(arType, aIndex, mSetpointQueue, aSequence, apRspAcceptor);
 }
 

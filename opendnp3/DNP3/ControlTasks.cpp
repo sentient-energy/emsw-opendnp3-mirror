@@ -45,7 +45,13 @@ bool ControlTaskBase::GetSelectBit()
 
 void ControlTaskBase::Respond(CommandStatus aStatus)
 {
-	mData.mpRspAcceptor->AcceptResponse(CommandResponse(aStatus), mData.mSequence);
+	if (mData.mpRspAcceptor) {
+		mData.mpRspAcceptor->AcceptResponse(CommandResponse(aStatus), mData.mSequence);
+	}
+	else {
+		LOG_BLOCK(LEV_WARNING, "No response acceptor given to report command status "
+			<< aStatus << " for SEQ " << mData.mSequence);
+	}
 }
 
 void ControlTaskBase::OnFailure()
