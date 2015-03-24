@@ -85,6 +85,7 @@ LogLevelEnum FromString_LogLevelEnum(TiXmlNode* apParent, const char* aValue) {
 	if(aValue != NULL && strcmp(aValue,"LOG_WARNING") == 0) return LOG_WARNING;
 	if(aValue != NULL && strcmp(aValue,"LOG_ERROR") == 0) return LOG_ERROR;
 	if(aValue != NULL && strcmp(aValue,"LOG_EVENT") == 0) return LOG_EVENT;
+	if(aValue != NULL && strcmp(aValue,"LOG_CUSTOM") == 0) return LOG_CUSTOM;
 	std::ostringstream oss;
 	oss << "String " << (aValue==NULL?"null":aValue) << " isnt valid for LogLevelEnum at " << apParent->Row() << ":" << apParent->Column();
 	if(IXMLDataBound::msExceptOnFailure){throw apl::Exception(LOCATION, oss.str());}

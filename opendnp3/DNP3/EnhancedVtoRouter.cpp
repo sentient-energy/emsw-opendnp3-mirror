@@ -51,11 +51,15 @@ bool EnhancedVtoRouter::CheckIncomingVtoData(const VtoData& arData)
 			return false;
 		}
 		else {
+			LOG_BLOCK(LEV_EVENT, "Received remote side notification, mInstRemoteConnected false->true");
+
 			mInstRemoteConnected = true;
 			return true;
 		}
 	case(VTODT_REMOTE_CLOSED):
 		if(mInstRemoteConnected) {
+			LOG_BLOCK(LEV_EVENT, "Received remote side notification, mInstRemoteConnected true->false");
+
 			mInstRemoteConnected = false;
 			return true;
 		}
@@ -76,20 +80,30 @@ std::string EnhancedVtoRouter::GetConnectionString(bool aOpen)
 
 void EnhancedVtoRouter::DoVtoRemoteConnectedChanged(bool aOpened)
 {
+	LOG_BLOCK(LEV_EVENT, "DoVtoRemoteConnectedChanged: open=" << (aOpened ? "true" : "false"));
+
 	if(mRemoteConnected != aOpened) {
-		LOG_BLOCK(LEV_INFO, "Remote connection: " << GetConnectionString(aOpened));
+		LOG_BLOCK(LEV_EVENT, "Remote connection: " << GetConnectionString(aOpened));
 		mRemoteConnected = aOpened;
 		this->HandleVtoRemoteConnectedChanged();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "DoVtoRemoteConnectedChanged: no change to mRemoteConnected state");
 	}
 }
 
 void EnhancedVtoRouter::SetLocalConnected(bool aConnected)
 {
+	LOG_BLOCK(LEV_EVENT, "SetLocalConnected: connected=" << (aConnected ? "true" : "false"));
+
 	if(mLocalConnected != aConnected) {
-		LOG_BLOCK(LEV_INFO, "Local connection: " << GetConnectionString(aConnected));
+		LOG_BLOCK(LEV_EVENT, "Local connection: " << GetConnectionString(aConnected));
 		mLocalConnected = aConnected;
 		this->HandleSetLocalConnected();
 		this->NotifyRemoteSideOfState(aConnected);
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "SetLocalConnected: no change to mLocalConnected state");
 	}
 }
 
@@ -113,27 +127,41 @@ ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings
 void ServerSocketVtoRouter::HandleVtoRemoteConnectedChanged()
 {
 	if(!mRemoteConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleVtoRemoteConnectedChanged: mRemoteConnected false->true, close and flush local connection");
+
 		// if the remote side has closed we should close our
 		// local connection and then prepare for a new one
 		this->FlushBuffers();
 		this->Close();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleVtoRemoteConnectedChanged: mRemoteConnected true->false, do nothing");
 	}
 
 }
 
 void ServerSocketVtoRouter::HandleSetLocalConnected()
 {
-	if(!mLocalConnected) this->FlushBuffers();
+	if(!mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleSetLocalConnected: mLocalConnected true->false, flush buffers");
+
+		this->FlushBuffers();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleSetLocalConnected: mLocalConnected false->true, do nothing");
+	}
 }
 
 void ServerSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 {
-
 	if(this->mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleReceivingDataWhenRemoteClosed: mLocalConnected=true, close and flush");
+
 		this->FlushBuffers();
 		this->Close();
 	}
 	else {
+		LOG_BLOCK(LEV_EVENT, "HandleReceivingDataWhenRemoteClosed: mLocalConnected=false, notify remote side");
 		this->NotifyRemoteSideOfState(false);
 	}
 }
@@ -141,16 +169,25 @@ void ServerSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 void ServerSocketVtoRouter::HandleDuplicateOpen()
 {
 	if(this->mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=true, close and flush");
+
 		this->FlushBuffers();
 		this->Close();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=false, do nothing");
 	}
 }
 
 void ServerSocketVtoRouter::HandleDuplicateClose()
 {
 	if(this->mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateClose: mLocalConnected=true, flush and close");
 		this->FlushBuffers();
 		this->Close();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateClose: mLocalConnected=false, do nothing");
 	}
 }
 
@@ -167,6 +204,8 @@ ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings
 void ClientSocketVtoRouter::HandleVtoRemoteConnectedChanged()
 {
 	if(mRemoteConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleVtoRemoteConnectedChanged: mRemoteConnected false->true, startOne()");
+
 		// pretend we are online, so the other side sees a "connected"
 		// message. If we succeed in connecting the second SetLocalConnected(true)
 		// call will do nothing, if we fail the SetLocalConnected(false) call
@@ -177,6 +216,8 @@ void ClientSocketVtoRouter::HandleVtoRemoteConnectedChanged()
 		this->StartOne();
 	}
 	else {
+		LOG_BLOCK(LEV_EVENT, "HandleVtoRemoteConnectedChanged: mRemoteConnected true->false, flushed buffers, suspend()");
+
 		this->FlushBuffers();
 		this->Suspend(); //stop local connection attempts when we lose the remote side
 	}
@@ -185,15 +226,25 @@ void ClientSocketVtoRouter::HandleVtoRemoteConnectedChanged()
 void ClientSocketVtoRouter::HandleSetLocalConnected()
 {
 	// we shouldn't automatically reconnect when the connection drops
-	if(!mLocalConnected) this->CloseAndFlushBuffers();
+	if(!mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleSetLocalConnected: mLocalConnected true->false, Close and flushed buffers");
+		this->CloseAndFlushBuffers();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleSetLocalConnected: mLocalConnected false->true, do nothing");
+	}
 }
 
 void ClientSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 {
 	if(this->mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleReceivingDataWhenRemoteClosed: mLocalConnected=true, close and flush buffer");
+
 		this->CloseAndFlushBuffers();
 	}
 	else {
+		LOG_BLOCK(LEV_EVENT, "HandleReceivingDataWhenRemoteClosed: mLocalConnected=false, notify remote side");
+
 		this->NotifyRemoteSideOfState(false);
 	}
 }
@@ -201,13 +252,18 @@ void ClientSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 void ClientSocketVtoRouter::HandleDuplicateOpen()
 {
 	if(this->mLocalConnected) {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=true, close and flush");
+
 		this->CloseAndFlushBuffers();
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=false, do nothing");
 	}
 }
 
 void ClientSocketVtoRouter::HandleDuplicateClose()
 {
-
+	LOG_BLOCK(LEV_EVENT, "HandleDuplicateClose: do nothing");
 }
 
 }

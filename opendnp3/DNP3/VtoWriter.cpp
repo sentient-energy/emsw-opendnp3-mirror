@@ -58,7 +58,7 @@ size_t VtoWriter::Write(const boost::uint8_t* apData,
 		 */
 		this->Commit(apData, num, aChannelId);
 
-		LOG_BLOCK(LEV_INTERPRET, "VtoWriter: " << this->NumBytesAvailable() << " available out of "
+		LOG_BLOCK(LEV_EVENT, "VtoWriter: " << this->NumBytesAvailable() << " available out of "
 			<< (mMaxVtoChunks * VtoData::MAX_SIZE));
 	}
 

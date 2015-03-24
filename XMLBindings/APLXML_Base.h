@@ -45,6 +45,7 @@ enum LogLevelEnum {
 	LOG_WARNING,
 	LOG_ERROR,
 	LOG_EVENT,
+	LOG_CUSTOM,
 };
 	LogLevelEnum FromString_LogLevelEnum(TiXmlNode* apParent, const char* aValue);
 	string ToString_LogLevelEnum(LogLevelEnum aValue);

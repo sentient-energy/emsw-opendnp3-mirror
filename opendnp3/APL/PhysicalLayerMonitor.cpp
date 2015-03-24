@@ -77,7 +77,7 @@ bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeoutMs)
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
+	LOG_BLOCK(LEV_EVENT, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;
 
 	CriticalSection cs(&mLock);
@@ -102,31 +102,31 @@ void PhysicalLayerMonitor::DoFinalShutdown()
 
 void PhysicalLayerMonitor::Start()
 {
-	LOG_BLOCK(LEV_DEBUG, "Start()");
+	LOG_BLOCK(LEV_EVENT, "Start()");
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	LOG_BLOCK(LEV_DEBUG, "StartOne()");
+	LOG_BLOCK(LEV_EVENT, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	LOG_BLOCK(LEV_DEBUG, "Close()");
+	LOG_BLOCK(LEV_EVENT, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
 {
-	LOG_BLOCK(LEV_DEBUG, "Suspend()");
+	LOG_BLOCK(LEV_EVENT, "Suspend()");
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	LOG_BLOCK(LEV_DEBUG, "Shutdown()");
+	LOG_BLOCK(LEV_EVENT, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 
@@ -134,7 +134,7 @@ void PhysicalLayerMonitor::Shutdown()
 
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnOpenTimerExpiration()");
+	LOG_BLOCK(LEV_EVENT, "OnOpenTimerExpiration()");
 	assert(mpOpenTimer != NULL);
 	mpOpenTimer = NULL;
 	mpState->OnOpenTimeout(this);
@@ -142,14 +142,14 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 
 void PhysicalLayerMonitor::_OnOpenFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");
+	LOG_BLOCK(LEV_EVENT, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
 }
 
 void PhysicalLayerMonitor::_OnReadWriteFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnReadWriteFailure()");
+	LOG_BLOCK(LEV_EVENT, "_OnReadWriteFailure()");
 	mpState->OnReadWriteFailure(this);
 	this->OnPhysicalLayerReadWriteFailureCallback();
 }
@@ -157,14 +157,14 @@ void PhysicalLayerMonitor::_OnReadWriteFailure()
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnLowerLayerUp");
+	LOG_BLOCK(LEV_EVENT, "_OnLowerLayerUp");
 	mpState->OnLayerOpen(this);
 	this->OnPhysicalLayerOpenSuccessCallback();
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerDown()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnLowerLayerDown");
+	LOG_BLOCK(LEV_EVENT, "_OnLowerLayerDown");
 	mpState->OnLayerClose(this);
 	this->OnPhysicalLayerCloseCallback();
 }
@@ -173,6 +173,8 @@ void PhysicalLayerMonitor::_OnLowerLayerDown()
 
 void PhysicalLayerMonitor::StartOpenTimer()
 {
+	LOG_BLOCK(LEV_EVENT, "StartOpenTimer()");
+
 	assert(mpOpenTimer == NULL);
 	mpOpenTimer = mpTimerSrc->Start(M_OPEN_RETRY, boost::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
 }

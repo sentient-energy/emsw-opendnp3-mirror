@@ -35,7 +35,7 @@ FilterLevel Convert(APLXML_Base::LogLevelEnum aEnum)
 	case(APLXML_Base::LOG_WARNING): return LEV_WARNING;
 	case(APLXML_Base::LOG_ERROR): return LEV_ERROR;
 	case(APLXML_Base::LOG_EVENT): return LEV_EVENT;
-	default: return LEV_WARNING;
+	default: return (FilterLevel)(LEV_WARNING | LEV_ERROR | LEV_ERROR);
 	}
 }
 

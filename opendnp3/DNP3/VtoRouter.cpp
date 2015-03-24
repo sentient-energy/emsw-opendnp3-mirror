@@ -46,7 +46,7 @@ VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVto
 
 void VtoRouter::OnVtoDataReceived(const VtoData& arData)
 {
-	LOG_BLOCK(LEV_DEBUG, "GotRemoteData: " << arData.GetSize() << " Type: " << VtoDataTypeToString(arData.GetType()));
+	LOG_BLOCK(LEV_EVENT, "GotRemoteData: " << arData.GetSize() << " Type: " << VtoDataTypeToString(arData.GetType()));
 
 	if(this->CheckIncomingVtoData(arData)) {
 		/*
@@ -60,7 +60,7 @@ void VtoRouter::OnVtoDataReceived(const VtoData& arData)
 
 void VtoRouter::_OnReceive(const boost::uint8_t* apData, size_t aLength)
 {
-	LOG_BLOCK(LEV_COMM, "GotLocalData: " << aLength);
+	LOG_BLOCK(LEV_EVENT, "GotLocalData: " << aLength);
 
 	// turn the incoming data into a VtoMessage object and enque it
 	VtoMessage msg(VTODT_DATA, apData, aLength);
@@ -79,7 +79,7 @@ void VtoRouter::CheckForVtoWrite()
 		// type DATA means this is a buffer and we need to pull the data out and send it to the vto writer
 		if(msg.type == VTODT_DATA) {
 			size_t numWritten = mpVtoWriter->Write(msg.data.Buffer(), msg.data.Size(), this->GetChannelId());
-			LOG_BLOCK(LEV_INTERPRET, "VtoWriter: " << numWritten << " of " << msg.data.Size());
+			LOG_BLOCK(LEV_EVENT, "VtoWriter: " << numWritten << " of " << msg.data.Size());
 			if(numWritten < msg.data.Size()) {
 				size_t remainder = msg.data.Size() - numWritten;
 				VtoMessage partial(VTODT_DATA, msg.data.Buffer() + numWritten, remainder);
@@ -126,7 +126,7 @@ void VtoRouter::CheckForPhysWrite()
 				mWriteData = mPhysLayerTxBuffer.front();
 				mPhysLayerTxBuffer.pop();
 				mpPhys->AsyncWrite(mWriteData.mpData, mWriteData.GetSize());
-				LOG_BLOCK(LEV_COMM, "Wrote: " << mWriteData.GetSize());
+				LOG_BLOCK(LEV_EVENT, "Wrote: " << mWriteData.GetSize());
 			}
 		}
 		else {
@@ -138,6 +138,8 @@ void VtoRouter::CheckForPhysWrite()
 
 void VtoRouter::NotifyRemoteSideOfState(bool aConnected)
 {
+	LOG_BLOCK(LEV_EVENT, "NotifyRemoteSideOfState: connected=" << (aConnected ? "true" : "false"));
+
 	mVtoTxBuffer.push_back(VtoMessage(aConnected ? VTODT_REMOTE_OPENED : VTODT_REMOTE_CLOSED));
 	this->CheckForVtoWrite();
 }
@@ -145,6 +147,7 @@ void VtoRouter::NotifyRemoteSideOfState(bool aConnected)
 void VtoRouter::FlushBuffers()
 {
 	// clear out all of the data when we close the local connection
+	LOG_BLOCK(LEV_EVENT, "FlushBuffers");
 
 	while(mPhysLayerTxBuffer.size() > 0) {
 		LOG_BLOCK(LEV_WARNING, "Tossing data: " << this->mPhysLayerTxBuffer.front().GetType() << " size: " << this->mPhysLayerTxBuffer.front().GetSize());
@@ -160,6 +163,7 @@ void VtoRouter::OnBufferAvailable()
 
 void VtoRouter::OnPhysicalLayerOpenSuccessCallback()
 {
+	LOG_BLOCK(LEV_EVENT, "OnPhysicalLayerOpenSuccessCallback: local physical connection opened successfully");
 	this->SetLocalConnected(true);
 
 	this->CheckForPhysRead();
