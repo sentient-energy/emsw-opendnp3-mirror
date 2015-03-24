@@ -141,6 +141,8 @@ void ServerSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 void ServerSocketVtoRouter::HandleDuplicateOpen()
 {
 	if(this->mLocalConnected) {
+		mRemoteConnected = false;
+		mInstRemoteConnected = false;
 		this->FlushBuffers();
 		this->Close();
 	}
@@ -201,6 +203,8 @@ void ClientSocketVtoRouter::HandleReceivingDataWhenRemoteClosed()
 void ClientSocketVtoRouter::HandleDuplicateOpen()
 {
 	if(this->mLocalConnected) {
+		mRemoteConnected = false;
+		mInstRemoteConnected = false;
 		this->CloseAndFlushBuffers();
 	}
 }
