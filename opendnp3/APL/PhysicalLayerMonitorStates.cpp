@@ -365,7 +365,7 @@ void MonitorStateOpenOne::OnLayerClose(PhysicalLayerMonitor* apContext)
 
 void MonitorStateOpenOne::OnReadWriteFailure(PhysicalLayerMonitor* apContext)
 {
-	MonitorStateActions::ChangeState(apContext, MonitorStateShutingDown::Inst());
+	MonitorStateActions::ChangeState(apContext, MonitorStateSuspending::Inst());
 }
 
 /* --- Waiting --- */
