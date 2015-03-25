@@ -53,6 +53,7 @@ void VtoRouter::OnVtoDataReceived(const VtoData& arData)
 		 * Each physical layer action is processed serially, so we can take
 		 * advantage of the FIFO structure to keep things simple.
 		 */
+		LOG_BLOCK(LEV_EVENT, "Pushed to physical TX buffer");
 		this->mPhysLayerTxBuffer.push(arData);
 		this->CheckForPhysWrite();
 	}
@@ -120,7 +121,11 @@ void VtoRouter::CheckForPhysWrite()
 {
 	if(!mPhysLayerTxBuffer.empty()) {
 		VtoDataType type = mPhysLayerTxBuffer.front().GetType();
+		LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: front Type=" << VtoDataTypeToString(type));
+
 		if(type == VTODT_DATA) {
+			LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: handling data");
+
 			// only write to the physical layer if we have a valid local connection
 			if(mpPhys->CanWrite()) {
 				mWriteData = mPhysLayerTxBuffer.front();
@@ -128,11 +133,19 @@ void VtoRouter::CheckForPhysWrite()
 				mpPhys->AsyncWrite(mWriteData.mpData, mWriteData.GetSize());
 				LOG_BLOCK(LEV_EVENT, "Wrote: " << mWriteData.GetSize());
 			}
+			else {
+				LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: saving for later since local connection is not valid yet");
+			}
 		}
 		else {
+			LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: handling remote connected change");
+
 			this->mPhysLayerTxBuffer.pop();
 			this->DoVtoRemoteConnectedChanged(type == VTODT_REMOTE_OPENED);
 		}
+	}
+	else {
+		LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: buffer is empty, do nothing");
 	}
 }
 
