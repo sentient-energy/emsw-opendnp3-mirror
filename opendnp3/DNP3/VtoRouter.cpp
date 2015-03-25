@@ -144,9 +144,6 @@ void VtoRouter::CheckForPhysWrite()
 			this->DoVtoRemoteConnectedChanged(type == VTODT_REMOTE_OPENED);
 		}
 	}
-	else {
-		LOG_BLOCK(LEV_EVENT, "CheckForPhysWrite: buffer is empty, do nothing");
-	}
 }
 
 void VtoRouter::NotifyRemoteSideOfState(bool aConnected)

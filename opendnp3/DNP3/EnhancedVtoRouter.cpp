@@ -88,7 +88,7 @@ void EnhancedVtoRouter::DoVtoRemoteConnectedChanged(bool aOpened)
 		this->HandleVtoRemoteConnectedChanged();
 	}
 	else {
-		LOG_BLOCK(LEV_EVENT, "DoVtoRemoteConnectedChanged: no change to mRemoteConnected state");
+		LOG_BLOCK(LEV_EVENT, "DoVtoRemoteConnectedChanged: do nothing");
 	}
 }
 
@@ -171,6 +171,8 @@ void ServerSocketVtoRouter::HandleDuplicateOpen()
 	if(this->mLocalConnected) {
 		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=true, close and flush");
 
+		mRemoteConnected = false;
+		mInstRemoteConnected = false;
 		this->FlushBuffers();
 		this->Close();
 	}
@@ -253,7 +255,8 @@ void ClientSocketVtoRouter::HandleDuplicateOpen()
 {
 	if(this->mLocalConnected) {
 		LOG_BLOCK(LEV_EVENT, "HandleDuplicateOpen: mLocalConnected=true, close and flush");
-
+		mRemoteConnected = false;
+		mInstRemoteConnected = false;
 		this->CloseAndFlushBuffers();
 	}
 	else {

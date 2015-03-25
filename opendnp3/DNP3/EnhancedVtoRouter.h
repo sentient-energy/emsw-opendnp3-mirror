@@ -63,14 +63,11 @@ protected:
 
 	bool mRemoteConnected;
 	bool mLocalConnected;
+	bool mInstRemoteConnected;
 
 private:
 
-
-
 	static std::string GetConnectionString(bool aOpen);
-	bool mInstRemoteConnected;
-
 };
 
 /**
