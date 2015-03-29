@@ -379,7 +379,7 @@ sudo apt-get install -y \
 *Update the version
 Bump the version of the library in the following files:
 configure.ac
-doxygen.config
+config/doxygen.config
 opendnp3/version.hpp
 
 Add to the changelog: debian/changelog
@@ -391,13 +391,13 @@ export P="${PN}-${PV}"
 export ORIG_TARBALL="${PN}_${PV}.orig.tar.gz"
 
 # Step 1 - create the .orig.tar.gz file
-git clone github:sentient-energy/dnp3.git ${P}
+git clone github:sentient-energy/emsw-opendnp3-mirror.git ${P}
 rm -rf ${P}/debian/ ${P}/.git
 tar cfz ${ORIG_TARBALL} ${P}
 rm -rf ${P}
 
 # Step 2 - create the DEB(s)
-git clone github:sentient-energy/dnp3.git ${P}
+git clone github:sentient-energy/emsw-opendnp3-mirror.git ${P}
 rm -rf ${P}/.git
 cd ${P}
 debuild -uc -us
