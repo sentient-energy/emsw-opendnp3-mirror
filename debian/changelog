@@ -1,3 +1,13 @@
+opendnp3 (1.2.2-0sentient0) unstable; urgency=low
+
+  * Fixed on read-write failure handling such that the socket is suspended
+    instead of being shutdown. If the socket is shutdown, it can't be
+    reused until the stack is restarted.
+  * Fixed VTO remote state synchronization logic to prevent stalling of the
+    VTO channel in the case of a duplicate open.
+
+ -- Hung Le <hle@sentient-energy.com>  Sat, 28 Mar 2015 21:39:00 -0800
+
 opendnp3 (1.2.1-0sentient0) unstable; urgency=low
 
   * Added error handling for read/write error on an opened physical layer.
