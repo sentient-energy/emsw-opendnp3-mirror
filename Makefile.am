@@ -654,12 +654,12 @@ dnp3test_SOURCES = \
 	DNP3Test/TransportTestObject.cpp \
 	DNP3Test/VtoIntegrationTestBase.cpp
 
-demo_master_cpp_LDADD = libopendnp3.la
+demo_master_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
 demo_master_cpp_SOURCES = \
 	demos/master-cpp/DemoMain.cpp \
 	demos/master-cpp/MasterDemo.cpp
 
-demo_slave_cpp_LDADD = libopendnp3.la
+demo_slave_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
 demo_slave_cpp_SOURCES = \
 	demos/slave-cpp/DemoMain.cpp \
 	demos/slave-cpp/SlaveDemo.cpp
