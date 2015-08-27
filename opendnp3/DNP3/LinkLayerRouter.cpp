@@ -211,7 +211,7 @@ void LinkLayerRouter::_OnSendFailure()
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(mTransmitQueue.size() > 0 && !mTransmitting) {
+	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite()) {
 		mTransmitting = true;
 		const LinkFrame& f = mTransmitQueue.front();
 		LOG_BLOCK(LEV_INTERPRET, "~> " << f.ToString());
