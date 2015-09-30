@@ -1,3 +1,15 @@
+opendnp3 (1.2.3-0sentient0) unstable; urgency=low
+
+  * Fix unhandled exception case where LinkLayerRouter is performing
+    AsyncWrite() while the physical layer is closing by checking with
+    CanWrite().
+  * Fix bug in master stack state where if the lower layer goes down while a
+    task is being executed, the task never gets the proper OnComplete()
+    call. The result is that the task remains in running mode indefinitely
+    and no other tasks can be started leaving the master in a hung state.
+
+ -- Hung Le <hle@sentient-energy.com>  Wed, 30 Sept 2015 16:40:00 -0800
+
 opendnp3 (1.2.2-0sentient0) unstable; urgency=low
 
   * Fixed on read-write failure handling such that the socket is suspended
