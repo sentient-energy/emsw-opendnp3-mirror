@@ -139,6 +139,7 @@ libopendnp3_la_SOURCES = \
 	opendnp3/DNP3/PriLinkLayerStates.cpp \
 	opendnp3/DNP3/ResponseContext.cpp \
 	opendnp3/DNP3/ResponseLoader.cpp \
+	opendnp3/DNP3/ScanScheduler.cpp \
 	opendnp3/DNP3/SecLinkLayerStates.cpp \
 	opendnp3/DNP3/SlaveConfig.cpp \
 	opendnp3/DNP3/Slave.cpp \

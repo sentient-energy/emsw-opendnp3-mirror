@@ -46,6 +46,7 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
+	mLogger(apLogger),
 	mService(),
 	mTimerSrc(mService.Get()),
 	mSuspendTimerSource(&mTimerSrc),
@@ -397,6 +398,26 @@ void AsyncStackManager::AddStackToChannel(const std::string& arStackName, Stack*
 	}
 
 	mStackMap[arStackName] = StackRecord(apStack, apChannel);
+}
+
+ScanScheduler* AsyncStackManager::GetScanScheduler(const std::string& arStackName)
+{
+    /*** Get Stackmap ***/
+    LOG_BLOCK(LEV_DEBUG, __PRETTY_FUNCTION__  << ": search for stack: " << arStackName);
+
+    auto pRecord = mStackMap.find(arStackName);
+
+    if (mStackMap.end() ==  pRecord)
+    {
+        LOG_BLOCK(LEV_DEBUG, __PRETTY_FUNCTION__ << ": stack " << arStackName << " not found");
+        return nullptr;
+    }
+
+    /*** Get master stack ***/
+    auto pStackRecord = pRecord->second;
+    auto pMasterStack = dynamic_cast<MasterStack *>(pStackRecord.stack);
+
+    return (new ScanScheduler(&(pMasterStack->mMaster), mLogger)); 
 }
 
 }

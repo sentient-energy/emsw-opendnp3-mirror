@@ -296,6 +296,12 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 	mpState->OnUnsolResponse(this, arAPDU);
 }
 
+void Master::ScheduleOnDemandIntegrityPoll(void)
+{
+    mSchedule.AddOnDemandIntegrityPoll(this);
+    return;
+}
+
 /* Private functions */
 
 void Master::ProcessDataResponse(const APDU& arResponse)

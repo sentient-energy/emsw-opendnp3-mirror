@@ -33,6 +33,7 @@
 #include <opendnp3/APL/TimerSourceASIO.h>
 #include <opendnp3/APL/TcpSettings.h>
 #include <opendnp3/APL/UdpSettings.h>
+#include <opendnp3/DNP3/ScanScheduler.h>
 #include <opendnp3/DNP3/LinkRoute.h>
 #include <opendnp3/DNP3/VtoDataInterface.h>
 #include <opendnp3/DNP3/VtoRouterManager.h>
@@ -286,6 +287,13 @@ public:
 		return mService.Get();
 	}
 
+	/**
+       Retrieves stack specific ScanScheduler object 
+     
+       @param arStackName Unique name of the stack
+    */
+    ScanScheduler* GetScanScheduler(const std::string& arStackName);
+
 private:
 
 	// Implement IThreadable
@@ -299,6 +307,7 @@ private:
 	// Add a stack from to a specified channel
 	void AddStackToChannel(const std::string& arStackName, Stack* apStack, LinkChannel* apChannel, const LinkRoute& arRoute);
 
+    Logger* mLogger;
 	IOService mService;
 	TimerSourceASIO mTimerSrc;
 	SuspendTimerSource mSuspendTimerSource;

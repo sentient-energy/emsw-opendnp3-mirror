@@ -127,6 +127,13 @@ public:
 		return true;
 	}
 
+	/**
+	 * Schedules the on demand integrity poll 
+	 *
+	 * @return None
+	 */
+    void ScheduleOnDemandIntegrityPoll(void);
+
 private:
 
 	void UpdateState(StackStates aState);

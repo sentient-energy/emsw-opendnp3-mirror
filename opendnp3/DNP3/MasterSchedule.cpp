@@ -50,6 +50,24 @@ void MasterSchedule::ResetStartupTasks()
 	mpGroup->ResetTasks(START_UP_TASKS);
 }
 
+void MasterSchedule::AddOnDemandIntegrityPoll(Master *apMaster)
+{
+    /* Schedule On Demand Integrity Poll */
+    AsyncTaskBase* pIntegrity = mTracking.Add(
+                                   -1,  // Non periodic task
+                                    0,  // No retry on failure 
+                                    AMP_POLL,
+                                    bind(&Master::IntegrityPoll, apMaster, _1),
+                                    "On-Demand Integrity Poll");
+
+    pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
+ 
+    /* Enable task execution */
+    pIntegrity->Enable();
+
+    return;
+}
+
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 {
 	AsyncTaskBase* pIntegrity = mTracking.Add(
@@ -142,7 +160,6 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	mpVtoTransmitTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
-
 }
 
 }

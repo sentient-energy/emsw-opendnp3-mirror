@@ -70,6 +70,9 @@ public:
 	// Resets all of the tasks that run on startup. This is typically done after a failure
 	void ResetStartupTasks();
 
+    // Adds the on demand integrity on the task vector
+    void AddOnDemandIntegrityPoll(Master* mpMaster);
+
 private:
 
 	void Init(const MasterConfig& arCfg, Master* mpMaster);
