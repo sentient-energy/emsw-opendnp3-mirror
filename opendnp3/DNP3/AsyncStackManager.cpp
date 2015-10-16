@@ -46,7 +46,6 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
-	mLogger(apLogger),
 	mService(),
 	mTimerSrc(mService.Get()),
 	mSuspendTimerSource(&mTimerSrc),
@@ -289,7 +288,7 @@ void AsyncStackManager::RemoveStack(const std::string& arStackName)
 AsyncStackManager::StackRecord AsyncStackManager::GetStackRecordByName(const std::string& arStackName)
 {
 	StackMap::iterator i = mStackMap.find(arStackName);
-	if (i == mStackMap.end()) throw ArgumentException(LOCATION, "Unknown stack");
+	if (i == mStackMap.end()) throw ArgumentException(LOCATION, "Unknown stack: " + arStackName);
 	return i->second;
 }
 
@@ -402,22 +401,11 @@ void AsyncStackManager::AddStackToChannel(const std::string& arStackName, Stack*
 
 ScanScheduler* AsyncStackManager::GetScanScheduler(const std::string& arStackName)
 {
-    /*** Get Stackmap ***/
-    LOG_BLOCK(LEV_DEBUG, __PRETTY_FUNCTION__  << ": search for stack: " << arStackName);
-
-    auto pRecord = mStackMap.find(arStackName);
-
-    if (mStackMap.end() ==  pRecord)
-    {
-        LOG_BLOCK(LEV_DEBUG, __PRETTY_FUNCTION__ << ": stack " << arStackName << " not found");
-        return nullptr;
-    }
-
     /*** Get master stack ***/
-    auto pStackRecord = pRecord->second;
-    auto pMasterStack = dynamic_cast<MasterStack *>(pStackRecord.stack);
+    StackRecord record = this->GetStackRecordByName(arStackName);
+    MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
 
-    return (new ScanScheduler(&(pMasterStack->mMaster), mLogger)); 
+    return &(pMasterStack->mScanScheduler); 
 }
 
 }

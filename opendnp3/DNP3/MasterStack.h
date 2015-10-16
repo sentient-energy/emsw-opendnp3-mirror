@@ -22,6 +22,7 @@
 #include <opendnp3/DNP3/Master.h>
 #include <opendnp3/DNP3/MasterStackConfig.h>
 #include <opendnp3/DNP3/Stack.h>
+#include <opendnp3/DNP3/ScanScheduler.h>
 
 namespace apl
 {
@@ -44,6 +45,7 @@ public:
 	IVtoReader* GetVtoReader();
 
 	Master mMaster;
+	ScanScheduler mScanScheduler;
 };
 
 }

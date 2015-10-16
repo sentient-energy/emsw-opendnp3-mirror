@@ -307,7 +307,6 @@ private:
 	// Add a stack from to a specified channel
 	void AddStackToChannel(const std::string& arStackName, Stack* apStack, LinkChannel* apChannel, const LinkRoute& arRoute);
 
-    Logger* mLogger;
 	IOService mService;
 	TimerSourceASIO mTimerSrc;
 	SuspendTimerSource mSuspendTimerSource;
