@@ -105,7 +105,7 @@ bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
 void AsyncTaskBase::OnComplete(bool aSuccess)
 {
 	if(!mIsRunning) {
-		throw InvalidStateException(LOCATION, "Not Running");
+		throw InvalidStateException(LOCATION, mName + ": Not Running");
 	}
 	mIsRunning = false;
 

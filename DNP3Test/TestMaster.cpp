@@ -252,6 +252,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
 
 	t.master.OnLowerLayerDown();
+
 	t.master.OnLowerLayerUp();
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
 }

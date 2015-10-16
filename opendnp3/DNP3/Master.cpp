@@ -249,9 +249,9 @@ void Master::OnLowerLayerUp()
 
 void Master::OnLowerLayerDown()
 {
-	mpState->OnLowerLayerDown(this);
-	mSchedule.DisableOnlineTasks();
-	this->UpdateState(SS_COMMS_DOWN);
+    mpState->OnLowerLayerDown(this);
+    this->UpdateState(SS_COMMS_DOWN);
+    mSchedule.DisableOnlineTasks();
 }
 
 void Master::OnSolSendSuccess()

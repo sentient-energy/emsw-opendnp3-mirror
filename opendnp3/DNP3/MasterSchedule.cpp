@@ -157,6 +157,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	                        boost::bind(&Master::TransmitVtoData, apMaster, _1),
 	                        "Buffer VTO Data");
 
+	mpCommandTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpVtoTransmitTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
