@@ -44,9 +44,11 @@ void ThreadBoost::Start()
 
 void ThreadBoost::WaitForStop()
 {
-	if(mpThread != NULL) mpThread->join();
-	delete mpThread;
-	mpThread = NULL;
+	if(mpThread != NULL) {
+	    mpThread->join();
+	    delete mpThread;
+	    mpThread = NULL;
+	}
 }
 
 void ThreadBoost::SleepFor(millis_t millis, bool ensureSleepForCorrectTime)
