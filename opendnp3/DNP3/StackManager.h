@@ -121,12 +121,6 @@ public:
 	                        ICommandAcceptor* apCmdAcceptor,
 	                        const SlaveStackConfig& arCfg);
 
-	void AddVtoChannel(const std::string& arStackName,
-	                   IVtoCallbacks* apOnDataCallback);
-
-	void RemoveVtoChannel(const std::string& arStackName,
-	                      IVtoCallbacks* apOnDataCallback);
-
 	void StartVtoRouter(const std::string& arPortName,
 	                    const std::string& arStackName,
 	                    const VtoRouterSettings& arSettings);

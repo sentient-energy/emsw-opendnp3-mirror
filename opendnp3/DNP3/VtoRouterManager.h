@@ -49,16 +49,18 @@ namespace dnp
 class VtoRouter;
 struct VtoRouterSettings;
 class IVtoWriter;
+class IVtoReader;
 class IVtoDataHandler;
 
 class RouterRecord
 {
 public:
-	RouterRecord(const std::string& arPortName, boost::shared_ptr<VtoRouter> apRouter, IVtoWriter* apWriter, boost::uint8_t aVtoChannelId);
+	RouterRecord(const std::string& arPortName, boost::shared_ptr<VtoRouter> apRouter, IVtoWriter* apWriter, IVtoReader *apReader, boost::uint8_t aVtoChannelId);
 
 	std::string mPortName;
 	boost::shared_ptr<VtoRouter> mpRouter;
 	IVtoWriter* mpWriter;
+	IVtoReader* mpReader;
 	boost::uint8_t mVtoChannelId;
 };
 
@@ -75,7 +77,8 @@ public:
 	VtoRouter* StartRouter(
 	        const std::string& arPortName,
 	        const VtoRouterSettings& arSettings,
-	        IVtoWriter* apWriter);
+	        IVtoWriter* apWriter,
+	        IVtoReader* apReader);
 
 	void StopRouter(IVtoWriter* apWriter, boost::uint8_t aVtoChannelId);
 	void StopAllRoutersOnWriter(IVtoWriter* apWriter);
@@ -86,14 +89,12 @@ public:
 
 private:
 
-	void StopRouter(VtoRouter* apRouter, IVtoWriter* apWriter);
+	void StopRouter(VtoRouter* apRouter);
 
 	RouterRecordVector::iterator Find(IVtoWriter* apWriter, boost::uint8_t aVtoChannelId);
 	RouterRecordVector::iterator Find(IVtoWriter* apWriter);
 
 	Logger* GetSubLogger(const std::string& arId, boost::uint8_t aVtoChannelId);
-
-	void StopRouter(const RouterRecordVector::iterator& arIter);
 
 	RouterRecordVector mRecords;
 

@@ -141,16 +141,6 @@ std::vector<std::string> StackManager::GetPortNames()
 	return mpImpl->GetPortNames();
 }
 
-void StackManager::AddVtoChannel(const std::string& arStackName, IVtoCallbacks* apOnDataCallback)
-{
-	return mpImpl->AddVtoChannel(arStackName, apOnDataCallback);
-}
-
-void StackManager::RemoveVtoChannel(const std::string& arStackName, IVtoCallbacks* apOnDataCallback)
-{
-	mpImpl->RemoveVtoChannel(arStackName, apOnDataCallback);
-}
-
 void StackManager::StartVtoRouter(const std::string& arPortName, const std::string& arStackName, const VtoRouterSettings& arSettings)
 {
 	mpImpl->StartVtoRouter(arPortName, arStackName, arSettings);

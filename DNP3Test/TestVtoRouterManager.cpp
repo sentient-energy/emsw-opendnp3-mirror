@@ -24,6 +24,7 @@
 #include <opendnp3/DNP3/VtoRouterManager.h>
 #include <opendnp3/DNP3/VtoRouterSettings.h>
 #include <opendnp3/DNP3/VtoWriter.h>
+#include <opendnp3/DNP3/VtoReader.h>
 
 #include <APLTestTools/MockTimerSource.h>
 #include <APLTestTools/MockPhysicalLayerSource.h>
@@ -40,7 +41,8 @@ public:
 		mts(),
 		mpls(log.GetLogger(aLevel, "source"), &mts),
 		mgr(log.GetLogger(aLevel, "vto"), &mts, &mpls),
-		writer(log.GetLogger(aLevel, "writer"), 100) {
+		writer(log.GetLogger(aLevel, "writer"), 100),
+		reader(log.GetLogger(aLevel, "reader")) {
 		if(aImmediate) log.AddLogSubscriber(LogToStdio::Inst());
 	}
 
@@ -49,6 +51,7 @@ public:
 	MockPhysicalLayerSource mpls;
 	VtoRouterManager mgr;
 	VtoWriter writer;
+	VtoReader reader;
 };
 
 BOOST_AUTO_TEST_SUITE(VtoRouterManagerSuite)
@@ -61,7 +64,7 @@ BOOST_AUTO_TEST_CASE(Construction)
 BOOST_AUTO_TEST_CASE(ManagerCreatesRouterAndStartsIt)
 {
 	TestObject t;
-	t.mgr.StartRouter("port", VtoRouterSettings(1, true, false), &t.writer);
+	t.mgr.StartRouter("port", VtoRouterSettings(1, true, false), &t.writer, &t.reader);
 	MockPhysicalLayerAsync* pMock = t.mpls.GetMock("port");
 	BOOST_REQUIRE(pMock != NULL);
 	BOOST_REQUIRE(pMock->IsOpening());
@@ -70,7 +73,7 @@ BOOST_AUTO_TEST_CASE(ManagerCreatesRouterAndStartsIt)
 BOOST_AUTO_TEST_CASE(StoppingUnknownRouterExcepts)
 {
 	TestObject t;
-	t.mgr.StartRouter("port", VtoRouterSettings(1, true, false), &t.writer);
+	t.mgr.StartRouter("port", VtoRouterSettings(1, true, false), &t.writer, &t.reader);
 	BOOST_REQUIRE_THROW(t.mgr.StopRouter(&t.writer, 2), ArgumentException);
 
 }

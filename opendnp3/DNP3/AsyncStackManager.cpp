@@ -202,38 +202,19 @@ IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const
 	return pSlave->mSlave.GetDataObserver();
 }
 
-void AsyncStackManager::AddVtoChannel(const std::string& arStackName,
-                                      IVtoCallbacks* apCallbacks)
-{
-	this->ThrowIfAlreadyShutdown();
-	StackRecord rec = this->GetStackRecordByName(arStackName);
-	rec.stack->GetVtoWriter()->AddVtoCallback(apCallbacks);
-	rec.stack->GetVtoReader()->AddVtoChannel(apCallbacks);
-}
-
-void AsyncStackManager::RemoveVtoChannel(const std::string& arStackName, IVtoCallbacks* apCallbacks)
-{
-	this->ThrowIfAlreadyShutdown();
-	StackRecord rec = this->GetStackRecordByName(arStackName);
-	rec.stack->GetVtoWriter()->RemoveVtoCallback(apCallbacks);
-	rec.stack->GetVtoReader()->RemoveVtoChannel(apCallbacks);
-}
-
 void AsyncStackManager::StartVtoRouter(const std::string& arPortName,
                                        const std::string& arStackName, const VtoRouterSettings& arSettings)
 {
 	this->ThrowIfAlreadyShutdown();
 	StackRecord rec = this->GetStackRecordByName(arStackName);
-	VtoRouter* pRouter = mVtoManager.StartRouter(arPortName, arSettings, rec.stack->GetVtoWriter());
-	this->AddVtoChannel(arStackName, pRouter);
+	VtoRouter* pRouter = mVtoManager.StartRouter(arPortName, arSettings, rec.stack->GetVtoWriter(),
+	    rec.stack->GetVtoReader());
 }
 
 void AsyncStackManager::StopVtoRouter(const std::string& arStackName, boost::uint8_t aVtoChannelId)
 {
 	this->ThrowIfAlreadyShutdown();
 	IVtoWriter* pWriter = this->GetVtoWriter(arStackName);
-	RouterRecord rec = mVtoManager.GetRouterOnWriter(pWriter, aVtoChannelId);
-	this->RemoveVtoChannel(arStackName, rec.mpRouter.get());
 	mVtoManager.StopRouter(pWriter, aVtoChannelId);
 }
 

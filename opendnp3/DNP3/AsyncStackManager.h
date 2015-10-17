@@ -167,43 +167,6 @@ public:
 	                        const SlaveStackConfig&);
 
 	/**
-		Adds a VTO channel to a prexisting stack (master or slave).
-		This function should be used for advanced control of a VTO channel,
-		where the implementer wants to control the end VTO stream as a byte
-		array.  Otherwise, the implementer should look at
-		AsyncStackManager::StartVtoRouter() as a simpler way of connecting a
-		port (such as a local TCP service) to the VTO stream.
-
-		@param arStackName			Unique name of the stack.
-		@param apOnDataCallback		Interface to callback with received
-									data.  The callback comes from an
-									unknown network thread, and should not
-									be blocked.
-
-		@return						Interface to use for writing
-									new VTO data from the master to the
-									slave.
-
-		@throw ArgumentException	if arPortName/arStackName doesn't exist
-									or if the VTO channel ID is already
-									bound for that stack
-	 */
-	void AddVtoChannel(const std::string& arStackName,
-	                   IVtoCallbacks* apOnDataCallback);
-
-	/**
-		Removes an existing VTO channel that was created using
-		AsyncStackManager::AddVtoChannel(), stopping callbacks.
-
-		@param arStackName			Unique name of the stack.
-		@param apOnDataCallback		Callback interface previously registered
-									in AddVtoChannel()
-
-		@throw ArgumentException if apOnDataCallback doesn't exist
-	*/
-	void RemoveVtoChannel(const std::string& arStackName, IVtoCallbacks* apOnDataCallback);
-
-	/**
 		Starts the VtoRouter for the specified port and stack.
 		A VtoRouter acts as a conduit, where the VTO stream is funneled
 		between the arStackName (which also defines a master/slave port) and
