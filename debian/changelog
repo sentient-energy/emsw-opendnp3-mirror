@@ -1,3 +1,17 @@
+opendnp3 (1.2.4-0sentient0) unstable; urgency=high
+
+  * Add new ScanScheduler class to allow trigger on-demand integrity poll.
+  * Fix bug in waiting for stop in ThreadBoost that cuases a double free of
+    the thread pointer.
+  * Fix exceptions thrown in TestMaster due to changes in the previous
+    release. The command task is now marked as an online task and is properly
+    disabled instead of relying on a OnComplete callback.
+  * Fix race condition in stopping and deallocating the VTO router that could
+    cause an invalid memory access because the router was not de-registered
+    from the VtoReader instance.
+
+ -- Hung Le <hle@sentient-energy.com>  Wed, 19 Oct 2015 11:44:00 -0800
+
 opendnp3 (1.2.3-0sentient0) unstable; urgency=low
 
   * Fix unhandled exception case where LinkLayerRouter is performing
