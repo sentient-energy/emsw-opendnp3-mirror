@@ -498,6 +498,7 @@ dnpheaders_HEADERS = \
 	opendnp3/DNP3/PriLinkLayerStates.h \
 	opendnp3/DNP3/ResponseContext.h \
 	opendnp3/DNP3/ResponseLoader.h \
+	opendnp3/DNP3/ScanScheduler.h \
 	opendnp3/DNP3/SecLinkLayerStates.h \
 	opendnp3/DNP3/SlaveConfig.h \
 	opendnp3/DNP3/SlaveEventBuffer.h \
