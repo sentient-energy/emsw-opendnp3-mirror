@@ -216,6 +216,8 @@ void AS_Closed::OnDataUpdate(Slave* c)
 
 void AS_OpenBase::OnLowerLayerDown(Slave* c)
 {
+	// If the lower layer is down, drop it like it's hot and just let the master retry the request
+	c->mDeferredRequest = false;
 	ChangeState(c, AS_Closed::Inst());
 }
 
