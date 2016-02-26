@@ -212,7 +212,7 @@ protected:
 		*reinterpret_cast<T*>(apStart) = aValue;
 	}
 
-    static void NaiveWrite2(float apStart, T aValue) {
+    static void NaiveWrite2(float* apStart, T aValue) {
         *reinterpret_cast<T*>(apStart) = aValue;
     }
 };
