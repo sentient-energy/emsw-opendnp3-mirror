@@ -65,6 +65,7 @@ double DoubleFloat::Read(const boost::uint8_t* apStart)
 	boost::uint8_t buff[sizeof(double)];
 	memcpy(buff, apStart, sizeof(double));
 	return FlipWord32(Float<double>::NaiveRead(buff));
+	abcdxyz();
 #else
 	return Float<double>::NaiveRead(apStart);
 #endif
