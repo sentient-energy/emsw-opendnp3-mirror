@@ -200,7 +200,7 @@ public:
 
 protected:
 
-	static T NaiveRead(const boost::uint8_t* apStart) {
+	static T NaiveRead(const double * apStart) {
 		return *reinterpret_cast<const T*>(apStart);
 	}
 
