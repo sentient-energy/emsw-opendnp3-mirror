@@ -200,10 +200,13 @@ public:
 
 protected:
 
-	static T NaiveRead(const double * apStart) {
+	static T NaiveRead(const boost::uint8_t* apStart) {
 		return *reinterpret_cast<const T*>(apStart);
 	}
 
+	static T NaiveRead2(const float *) {
+	        return *reinterpret_cast<const T*>(apStart);
+	    }
 
 	static void NaiveWrite(boost::uint8_t* apStart, T aValue) {
 		*reinterpret_cast<T*>(apStart) = aValue;

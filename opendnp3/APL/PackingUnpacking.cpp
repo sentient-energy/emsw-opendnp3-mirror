@@ -40,9 +40,10 @@ now uses an intermediate buffer that the compiler word aligns. */
 float SingleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	boost::uint8_t buff[sizeof(float)];
+	//boost::uint8_t buff[sizeof(float)];
+    float buff[sizeof(float)];
 	memcpy(buff, apStart, sizeof(float));
-	return Float<float>::NaiveRead(buff);
+	return Float<float>::NaiveRead2(buff);
 #else
 	return Float<float>::NaiveRead(apStart);
 #endif
@@ -62,8 +63,7 @@ void SingleFloat::Write(boost::uint8_t* apStart, float aValue)
 double DoubleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	//boost::uint8_t buff[sizeof(double)];
-	double buff[sizeof(double)];
+	boost::uint8_t buff[sizeof(double)];
 	memcpy(buff, apStart, sizeof(double));
 	return FlipWord32(Float<double>::NaiveRead(buff));
 #else
