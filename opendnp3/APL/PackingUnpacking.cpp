@@ -52,8 +52,9 @@ float SingleFloat::Read(const boost::uint8_t* apStart)
 void SingleFloat::Write(boost::uint8_t* apStart, float aValue)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	boost::uint8_t buff[sizeof(float)];
-	Float<float>::NaiveWrite(buff, aValue);
+	//boost::uint8_t buff[sizeof(float)];
+    float buff[sizeof(float)];
+	Float<float>::NaiveWrite2(buff, aValue);
 	memcpy(apStart, buff, sizeof(float));
 #else
 	Float<float>::NaiveWrite(apStart, aValue);

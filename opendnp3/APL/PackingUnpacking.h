@@ -211,6 +211,10 @@ protected:
 	static void NaiveWrite(boost::uint8_t* apStart, T aValue) {
 		*reinterpret_cast<T*>(apStart) = aValue;
 	}
+
+    static void NaiveWrite2(float apStart, T aValue) {
+        *reinterpret_cast<T*>(apStart) = aValue;
+    }
 };
 
 template <class T>
