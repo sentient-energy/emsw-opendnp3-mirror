@@ -62,10 +62,10 @@ void SingleFloat::Write(boost::uint8_t* apStart, float aValue)
 double DoubleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	boost::uint8_t buff[sizeof(double)];
+	//boost::uint8_t buff[sizeof(double)];
+	double buff[sizeof(double)];
 	memcpy(buff, apStart, sizeof(double));
 	return FlipWord32(Float<double>::NaiveRead(buff));
-	abcdxyz();
 #else
 	return Float<double>::NaiveRead(apStart);
 #endif
