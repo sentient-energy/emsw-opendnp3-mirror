@@ -204,7 +204,7 @@ protected:
 		return *reinterpret_cast<const T*>(apStart);
 	}
 
-	static T NaiveRead2(const float *) {
+	static T NaiveRead2(const float * apStart) {
 	        return *reinterpret_cast<const T*>(apStart);
 	    }
 
