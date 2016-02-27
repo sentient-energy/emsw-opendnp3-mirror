@@ -43,11 +43,11 @@ float SingleFloat::Read(const boost::uint8_t* apStart)
 	boost::uint8_t buff[sizeof(float)];
 	if(buff % 4)
 	{
-	    printf("*************************here in read address1111::: %x", buff);
+	    printf("*************************here in read address1111::: %u", buff);
 	}
 	else
 	{
-	    printf("*************************here read address:222222:: %x", buff);
+	    printf("*************************here read address:222222:: %u", buff);
 	}
 	//float buff[sizeof(float)];
 	memcpy(buff, apStart, sizeof(float));
@@ -63,11 +63,11 @@ void SingleFloat::Write(boost::uint8_t* apStart, float aValue)
 	boost::uint8_t buff[sizeof(float)];
 	if(buff % 4)
     {
-        printf("#######################################here in write address1111::: %x", buff);
+        printf("#######################################here in write address1111::: %u", buff);
     }
     else
     {
-        printf("#######################################here write address:222222:: %x", buff);
+        printf("#######################################here write address:222222:: %u", buff);
     }
     //float buff[sizeof(float)];
 	Float<float>::NaiveWrite(buff, aValue);
