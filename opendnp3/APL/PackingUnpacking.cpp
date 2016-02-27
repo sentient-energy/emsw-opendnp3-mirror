@@ -40,10 +40,18 @@ now uses an intermediate buffer that the compiler word aligns. */
 float SingleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	//boost::uint8_t buff[sizeof(float)];
-    float buff[sizeof(float)];
+	boost::uint8_t buff[sizeof(float)];
+	if(buff % 4)
+	{
+	    printf("*************************here in read address1111::: %x", buff);
+	}
+	else
+	{
+	    printf("*************************here read address:222222:: %x", buff);
+	}
+	//float buff[sizeof(float)];
 	memcpy(buff, apStart, sizeof(float));
-	return Float<float>::NaiveRead2(buff);
+	return Float<float>::NaiveRead(buff);
 #else
 	return Float<float>::NaiveRead(apStart);
 #endif
@@ -52,9 +60,17 @@ float SingleFloat::Read(const boost::uint8_t* apStart)
 void SingleFloat::Write(boost::uint8_t* apStart, float aValue)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
-	//boost::uint8_t buff[sizeof(float)];
-    float buff[sizeof(float)];
-	Float<float>::NaiveWrite2(buff, aValue);
+	boost::uint8_t buff[sizeof(float)];
+	if(buff % 4)
+    {
+        printf("#######################################here in write address1111::: %x", buff);
+    }
+    else
+    {
+        printf("#######################################here write address:222222:: %x", buff);
+    }
+    //float buff[sizeof(float)];
+	Float<float>::NaiveWrite(buff, aValue);
 	memcpy(apStart, buff, sizeof(float));
 #else
 	Float<float>::NaiveWrite(apStart, aValue);
