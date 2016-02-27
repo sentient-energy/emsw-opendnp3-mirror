@@ -18,7 +18,7 @@
 //
 #include <opendnp3/APL/PackingUnpacking.h>
 #include <opendnp3/APL/Util.h>
-
+#include <stdio.h>
 #include <memory>
 
 #ifdef max
