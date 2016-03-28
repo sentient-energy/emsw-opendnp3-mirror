@@ -41,7 +41,7 @@ float SingleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
 	float d;
-	memcpy(&d, apStart, sizeof(float));
+	memcpy(&d, apStart, sizeof(d));
 	return d;
 #else
 	return Float<float>::NaiveRead(apStart);
@@ -61,8 +61,8 @@ double DoubleFloat::Read(const boost::uint8_t* apStart)
 {
 #if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
 	double d;
-	memcpy(&d, apStart, sizeof(double));
-	return FlipWord32(d);
+	memcpy(&d, apStart, sizeof(d));
+	return d;
 #else
 	return Float<double>::NaiveRead(apStart);
 #endif
