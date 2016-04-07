@@ -1,3 +1,12 @@
+opendnp3 (1.2.5-0sentient0) unstable; urgency=medium
+
+  * Fix alignment trap for ARM processor when doing point read/write as
+    float or double.
+  * Honor the AllowTimeSync flag in the Master configuration and not perform
+    time sync with the outstation.
+
+ -- Hung Le <hle@sentient-energy.com>  Wed, 6 Apr 2016 20:08:00 -0800
+
 opendnp3 (1.2.4-0sentient0) unstable; urgency=high
 
   * Add new ScanScheduler class to allow trigger on-demand integrity poll.
