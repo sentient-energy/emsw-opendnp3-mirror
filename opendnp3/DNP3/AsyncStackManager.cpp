@@ -291,6 +291,7 @@ void AsyncStackManager::Shutdown()
 
 		// if we've cleaned up correctly, canceling the infinite timer will cause the thread to stop executing
 		mpInfiniteTimer->Cancel();
+		mService.Get()->stop();
 		LOG_BLOCK(LEV_DEBUG, "Joining on io_service thread");
 		mThread.WaitForStop();
 		LOG_BLOCK(LEV_DEBUG, "Join complete on io_service thread");
