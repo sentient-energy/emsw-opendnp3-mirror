@@ -45,6 +45,7 @@ namespace dnp
 
 Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, ITimerSource* apTimerSrc, ITimeSource* apTimeSrc) :
 	Loggable(apLogger),
+	mAllowTimeSync(aCfg.AllowTimeSync),
 	mVtoReader(apLogger),
 	mVtoWriter(apLogger->GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
 	mRequest(aCfg.FragSize),
@@ -122,7 +123,7 @@ void Master::ProcessIIN(const IINField& arIIN)
 	bool check_state = false;
 
 	//The clear IIN task only happens in response to detecting an IIN bit.
-	if(arIIN.GetNeedTime()) {
+	if(arIIN.GetNeedTime() && mAllowTimeSync) {
 		LOG_BLOCK(LEV_INFO, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
@@ -185,7 +186,7 @@ void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 
 void Master::SyncTime(ITask* apTask)
 {
-	if(mLastIIN.GetNeedTime()) {
+	if(mLastIIN.GetNeedTime() && mAllowTimeSync) {
 		mpState->StartTask(this, apTask, &mTimeSync);
 	}
 	else apTask->Disable();

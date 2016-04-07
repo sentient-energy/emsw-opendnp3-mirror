@@ -128,7 +128,7 @@ public:
 	}
 
 	/**
-	 * Schedules the on demand integrity poll 
+	 * Schedules the on demand integrity poll
 	 *
 	 * @return None
 	 */
@@ -148,6 +148,7 @@ private:
 	void ProcessCommand(ITask* apTask);
 	void TransmitVtoData(ITask* apTask);
 
+	bool mAllowTimeSync;
 	IINField mLastIIN;						// last IIN received from the outstation
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
