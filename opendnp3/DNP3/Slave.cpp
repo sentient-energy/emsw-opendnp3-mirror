@@ -55,6 +55,8 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, ITimerSource* apTimerSrc, 
 	mDeferredUnsol(false),
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
+	mUnsolDisable(arCfg.mDisableUnsol),
+	mUnsolExpectCON(false),
 	mpObserver(arCfg.mpObserver),
 	mState(SS_UNKNOWN),
 	mpTimeTimer(NULL),
@@ -155,6 +157,12 @@ void Slave::OnUnsolSendSuccess()
 
 void Slave::OnUnsolFailure()
 {
+	// disable unsol responses until request is received from master
+	if (mUnsolExpectCON) {
+		LOG_BLOCK(LEV_WARNING, "Disable unsol response");
+		mUnsolDisable = true;
+	}
+
 	mpState->OnUnsolFailure(this);
 	LOG_BLOCK(LEV_WARNING, "Unsol response failure");
 	this->FlushDeferredEvents();
@@ -162,6 +170,11 @@ void Slave::OnUnsolFailure()
 
 void Slave::OnRequest(const APDU& arAPDU, SequenceInfo aSeqInfo)
 {
+	// master is alive, make sure unsol responses are handled as configured
+	if (mUnsolDisable && !mConfig.mDisableUnsol)
+		LOG_BLOCK(LEV_WARNING, "Re-enable unsol response");
+	mUnsolDisable = mConfig.mDisableUnsol;
+
 	mpState->OnRequest(this, arAPDU, aSeqInfo);
 	this->FlushDeferredEvents();
 }
@@ -297,6 +310,7 @@ void Slave::SendUnsolicited(APDU& arAPDU)
 	mRspIIN.BitwiseOR(mIIN);
 	arAPDU.SetIIN(mRspIIN);
 	mpAppLayer->SendUnsolicited(arAPDU);
+	mUnsolExpectCON = (arAPDU.GetControl()).CON;
 }
 
 void Slave::ConfigureDelayMeasurement(const APDU& arRequest)

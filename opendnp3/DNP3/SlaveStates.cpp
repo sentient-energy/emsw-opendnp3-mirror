@@ -236,7 +236,7 @@ void AS_Idle::OnDataUpdate(Slave* c)
 	c->FlushUpdates();
 
 	// start the unsol timer or act immediately if there's no pack timer
-	if (!c->mConfig.mDisableUnsol && c->mStartupNullUnsol && c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
+	if (!c->mUnsolDisable && c->mStartupNullUnsol && c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
 		if (c->mConfig.mUnsolPackDelay == 0) {
 			ChangeState(c, AS_WaitForUnsolSuccess::Inst());
 			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
@@ -251,18 +251,20 @@ void AS_Idle::OnDataUpdate(Slave* c)
 void AS_Idle::OnUnsolExpiration(Slave* c)
 {
 	LOGGER_BLOCK(c->mpLogger, LEV_DEBUG, "AS_Idle::OnUnsolExpiration(Slave*)");
-	if (c->mStartupNullUnsol) {
-		if (c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
+	if (!c->mUnsolDisable) {
+		if (c->mStartupNullUnsol) {
+			if (c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
+				ChangeState(c, AS_WaitForUnsolSuccess::Inst());
+				c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
+				c->SendUnsolicited(c->mUnsol);
+			}
+		}
+		else {
+			// do the startup null unsol task
 			ChangeState(c, AS_WaitForUnsolSuccess::Inst());
-			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
+			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, ClassMask(false, false, false));
 			c->SendUnsolicited(c->mUnsol);
 		}
-	}
-	else {
-		// do the startup null unsol task
-		ChangeState(c, AS_WaitForUnsolSuccess::Inst());
-		c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, ClassMask(false, false, false));
-		c->SendUnsolicited(c->mUnsol);
 	}
 }
 
@@ -322,7 +324,8 @@ void AS_WaitForUnsolSuccess::OnUnsolFailure(Slave* c)
 	// if any unsol transaction fails, we re-enable the timer with the unsol retry delay
 	ChangeState(c, AS_Idle::Inst());
 	c->mRspContext.Reset();
-	c->StartUnsolTimer(c->mConfig.mUnsolRetryDelay);
+	if (!c->mUnsolDisable)
+		c->StartUnsolTimer(c->mConfig.mUnsolRetryDelay);
 }
 
 void AS_WaitForUnsolSuccess::OnUnsolSendSuccess(Slave* c)
@@ -379,10 +382,12 @@ void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave* c)
 	LOGGER_BLOCK(c->mpLogger, LEV_DEBUG, "AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave*)");
 	ChangeState(c, AS_WaitForRspSuccess::Inst());
 	c->mRspContext.Reset();
-	if (c->mConfig.mUnsolRetryDelay > 0)
-		c->StartUnsolTimer(c->mConfig.mUnsolRetryDelay);
-	else
-		c->OnUnsolTimerExpiration();
+	if (!c->mUnsolDisable) {
+		if (c->mConfig.mUnsolRetryDelay > 0)
+			c->StartUnsolTimer(c->mConfig.mUnsolRetryDelay);
+		else
+			c->OnUnsolTimerExpiration();
+	}
 }
 
 void AS_WaitForSolUnsolSuccess::OnUnsolSendSuccess(Slave* c)

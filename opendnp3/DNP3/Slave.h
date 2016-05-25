@@ -192,6 +192,9 @@ private:
 
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the NULL unsol startup message
 
+	bool mUnsolDisable;						// Indicates that unsol responses are disabled
+	bool mUnsolExpectCON;					// Indicates confirm is expected for unsol response
+
 	IStackObserver* mpObserver;             // update consumers who want to know when dnp3 connection state changes
 	StackStates mState;
 
