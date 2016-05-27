@@ -52,24 +52,51 @@ void MasterSchedule::ResetStartupTasks()
 
 void MasterSchedule::AddOnDemandIntegrityPoll(Master *apMaster)
 {
-    /* Schedule On Demand Integrity Poll */
-    AsyncTaskBase* pIntegrity = mTracking.Add(
-                                   -1,  // Non periodic task
-                                    0,  // No retry on failure 
-                                    AMP_POLL,
-                                    bind(&Master::IntegrityPoll, apMaster, _1),
-                                    "On-Demand Integrity Poll");
+	/* Schedule On Demand Integrity Poll */
+	AsyncTaskBase* pIntegrity = mTracking.Add(
+	                               -1,	// Non periodic task
+	                               0,	// No retry on failure
+	                               AMP_POLL,
+	                               bind(&Master::IntegrityPoll, apMaster, _1),
+	                               "On-Demand Integrity Poll");
 
-    pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
- 
-    /* Enable task execution */
-    pIntegrity->Enable();
+	pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
 
-    return;
+	/* Enable task execution */
+	pIntegrity->Enable();
+
+	return;
 }
 
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 {
+	/*
+	 * Create exception scan tasks and chain their dependency. We keep track of the
+	 * first and the last.
+	 */
+	AsyncTaskBase* pFirstEventScan = NULL;
+	AsyncTaskBase* pLastEventScan = NULL;
+	BOOST_FOREACH(ExceptionScan e, arCfg.mScans) {
+		AsyncTaskBase* pEventScan = mTracking.Add(
+		                                e.ScanRate,
+		                                arCfg.TaskRetryRate,
+		                                AMP_POLL,
+		                                bind(&Master::EventPoll, apMaster, _1, e.ClassMask),
+		                                "Event Scan");
+
+		pEventScan->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
+
+		if (pLastEventScan) {
+			pEventScan->AddDependency(pLastEventScan);
+			pLastEventScan = pEventScan;
+		}
+		else {
+			pFirstEventScan = pEventScan;
+			pLastEventScan = pEventScan;
+		}
+	}
+
+	// Create integrity poll task
 	AsyncTaskBase* pIntegrity = mTracking.Add(
 	                                arCfg.IntegrityRate,
 	                                arCfg.TaskRetryRate,
@@ -98,7 +125,23 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		                                   "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
-		pIntegrity->AddDependency(pUnsolDisable);
+
+		/*
+		 * If we have exception scan task(s), then make the first be dependent
+		 * on the unsol disable task and the integrity poll task be dependent
+		 * on the last. This is done so that the exception scan can pick up point change
+		 * events with timestamp before an integrity poll.
+		 *
+		 * If there is no exception scan, then make the integrity poll task be
+		 * next in the series after the unsolicited disable task.
+		 */
+		if (pFirstEventScan) {
+			pFirstEventScan->AddDependency(pUnsolDisable);
+			pIntegrity->AddDependency(pLastEventScan);
+		}
+		else {
+			pIntegrity->AddDependency(pUnsolDisable);
+		}
 
 		if (arCfg.EnableUnsol) {
 			TaskHandler handler = bind(
@@ -118,22 +161,6 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 			pUnsolEnable->AddDependency(pIntegrity);
 		}
-	}
-
-	/*
-	 * Load any exception scans and make them dependent on the
-	 * integrity poll.
-	 */
-	BOOST_FOREACH(ExceptionScan e, arCfg.mScans) {
-		AsyncTaskBase* pEventScan = mTracking.Add(
-		                                e.ScanRate,
-		                                arCfg.TaskRetryRate,
-		                                AMP_POLL,
-		                                bind(&Master::EventPoll, apMaster, _1, e.ClassMask),
-		                                "Event Scan");
-
-		pEventScan->SetFlags(ONLINE_ONLY_TASKS);
-		pEventScan->AddDependency(pIntegrity);
 	}
 
 	/* Tasks are executed when the master is is idle */
