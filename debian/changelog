@@ -1,3 +1,15 @@
+opendnp3 (1.2.6-0sentient0) unstable; urgency=medium
+
+  * Disable unsolicited responses if an unsolicited response requiring
+    confirmation is not confirmed before application layer retries are
+    consumed. Unsolicited responses are re-enabled on the next request
+    received. This procedure follows IEEE Standard 1815-2012, Subclause 4.6.6,
+    Rule 14, Alternative 2.
+  * Perform exception scan prior to integrity poll on connection
+    with device.
+
+ -- Hung Le <hle@sentient-energy.com>  Tues, 31 May 2016 22:58:00 -0800
+
 opendnp3 (1.2.5-0sentient0) unstable; urgency=medium
 
   * Fix alignment trap for ARM processor when doing point read/write as
