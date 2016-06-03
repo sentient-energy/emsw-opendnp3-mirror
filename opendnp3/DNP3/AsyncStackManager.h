@@ -229,6 +229,9 @@ public:
 	// Synchronously remove a single stack
 	void RemoveStack(const std::string& arStackName);
 
+	// @return a stack pointer
+	Stack* GetStack(const std::string& arStackName);
+
 	// @return a vector of all the stack names
 	std::vector<std::string> GetStackNames();
 
