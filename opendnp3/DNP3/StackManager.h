@@ -138,6 +138,8 @@ public:
 
 	void AddLogHook(ILogBase*);
 
+	Stack* GetStack(const std::string& arStackName);
+
 	std::vector<std::string> GetStackNames();
 
 	std::vector<std::string> GetPortNames();

@@ -132,6 +132,10 @@ void StackManager::RemoveStack(const std::string& arStackName)
 {
 	mpImpl->RemoveStack(arStackName);
 }
+Stack* StackManager::GetStack(const std::string& arStackName)
+{
+	mpImpl->GetStack(arStackName);
+}
 std::vector<std::string> StackManager::GetStackNames()
 {
 	return mpImpl->GetStackNames();
