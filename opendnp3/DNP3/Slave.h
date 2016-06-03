@@ -148,6 +148,15 @@ public:
 		return &mVtoWriter;
 	}
 
+	/**
+	 * Returns timestamp of last message received.
+	 *
+	 * @return			a timestamp
+	 */
+	TimeStamp_t GetLastRxTime() {
+		return mLastRxTime;
+	}
+
 private:
 
 	ChangeBuffer<SigLock> mChangeBuffer;	// how client code gives us updates
@@ -197,6 +206,8 @@ private:
 
 	IStackObserver* mpObserver;             // update consumers who want to know when dnp3 connection state changes
 	StackStates mState;
+
+	TimeStamp_t mLastRxTime;				// Timestamp of last message received
 
 	void UpdateState(StackStates aState);
 

@@ -59,6 +59,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, ITimerSource* apTimerSrc, 
 	mUnsolExpectCON(false),
 	mpObserver(arCfg.mpObserver),
 	mState(SS_UNKNOWN),
+	mLastRxTime(TimeStamp::GetTimeStamp()),
 	mpTimeTimer(NULL),
 	mVtoReader(apLogger),
 	mVtoWriter(apLogger->GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
@@ -153,6 +154,9 @@ void Slave::OnUnsolSendSuccess()
 	mpState->OnUnsolSendSuccess(this);
 	this->FlushDeferredEvents();
 	this->UpdateState(SS_COMMS_UP);
+	if (mUnsolExpectCON) {
+		mLastRxTime = TimeStamp::GetTimeStamp();
+	}
 }
 
 void Slave::OnUnsolFailure()
@@ -177,6 +181,7 @@ void Slave::OnRequest(const APDU& arAPDU, SequenceInfo aSeqInfo)
 
 	mpState->OnRequest(this, arAPDU, aSeqInfo);
 	this->FlushDeferredEvents();
+	mLastRxTime = TimeStamp::GetTimeStamp();
 }
 
 void Slave::OnUnknownObject()

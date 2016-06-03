@@ -68,6 +68,13 @@ AsyncStackManager::~AsyncStackManager()
 
 }
 
+Stack* AsyncStackManager::GetStack(const std::string& arStackName)
+{
+	StackMap::iterator i = mStackMap.find(arStackName);
+	if(i == mStackMap.end()) throw ArgumentException(LOCATION, "Stack not found: " + arStackName);
+	return StackRecord(i->second).stack;
+}
+
 std::vector<std::string> AsyncStackManager::GetStackNames()
 {
 
