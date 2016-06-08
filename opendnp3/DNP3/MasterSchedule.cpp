@@ -18,6 +18,7 @@
 #include <opendnp3/APL/AsyncTaskBase.h>
 #include <opendnp3/APL/AsyncTaskContinuous.h>
 #include <opendnp3/APL/AsyncTaskGroup.h>
+#include <opendnp3/APL/AsyncTaskPeriodic.h>
 #include <opendnp3/DNP3/Master.h>
 #include <opendnp3/DNP3/MasterSchedule.h>
 
@@ -188,6 +189,22 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	mpVtoTransmitTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
+}
+
+void MasterSchedule::AdjustIntegrityPollRate(millis_t IntegrityRate)
+{
+	AsyncTaskBase *aTask = NULL;
+
+	aTask = mTracking.FindTaskByName("Integrity Poll");
+
+	if (NULL != aTask) {
+		AsyncTaskPeriodic* aPer = dynamic_cast<AsyncTaskPeriodic*>(aTask);
+		/* Check to see if aPer is NULL to see if dynamic cast worked */
+		if (NULL != aPer) {
+			aPer->UpdatePeriod(IntegrityRate);
+		}
+	}
+
 }
 
 }

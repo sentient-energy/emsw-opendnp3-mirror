@@ -389,11 +389,21 @@ void AsyncStackManager::AddStackToChannel(const std::string& arStackName, Stack*
 
 ScanScheduler* AsyncStackManager::GetScanScheduler(const std::string& arStackName)
 {
-    /*** Get master stack ***/
-    StackRecord record = this->GetStackRecordByName(arStackName);
-    MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
+	/*** Get master stack ***/
+	StackRecord record = this->GetStackRecordByName(arStackName);
+	MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
 
-    return &(pMasterStack->mScanScheduler); 
+	return &(pMasterStack->mScanScheduler); 
+}
+
+void AsyncStackManager::UpdateIntegrityRate(const std::string& arStackName, uint32_t integrityRate)
+{
+	StackRecord record = this->GetStackRecordByName(arStackName);
+	MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
+	if (NULL != pMasterStack) {
+		pMasterStack->mMaster.UpdateIntegrityPollRate(integrityRate);
+	}
+	return;
 }
 
 }

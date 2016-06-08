@@ -44,6 +44,7 @@ class AsyncTaskPeriodic : public AsyncTaskBase
 public:
 
 	virtual ~AsyncTaskPeriodic() {}
+	void UpdatePeriod(millis_t aPeriod);
 
 private:
 

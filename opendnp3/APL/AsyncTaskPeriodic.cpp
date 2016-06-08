@@ -44,5 +44,20 @@ void AsyncTaskPeriodic::_OnComplete(bool aSuccess)
 	}
 }
 
+void AsyncTaskPeriodic::UpdatePeriod(millis_t aPeriod)
+{
+	if (0 < aPeriod) {
+		mPeriod = aPeriod;
+		/*
+		 * If we are currently polling. The time will be reset on the next
+		 * poll, else..reset mNextRunTime
+		 */
+		if (false == mIsRunning) {
+			Reset();
+			mpGroup->CheckState();
+		}
+	}
+}
+
 } //end ns
 

@@ -134,6 +134,14 @@ public:
 	 */
     void ScheduleOnDemandIntegrityPoll(void);
 
+	/**
+	 * Update Integrity Poll Interval
+	 *
+	 * @param interval The new interval for integrity poll
+	 * @return None
+	 */
+	void UpdateIntegrityPollRate(millis_t interval);
+
 private:
 
 	void UpdateState(StackStates aState);

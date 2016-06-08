@@ -73,6 +73,8 @@ public:
     // Adds the on demand integrity on the task vector
     void AddOnDemandIntegrityPoll(Master* mpMaster);
 
+	void AdjustIntegrityPollRate(millis_t IntegrityRate);
+
 private:
 
 	void Init(const MasterConfig& arCfg, Master* mpMaster);

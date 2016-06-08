@@ -309,6 +309,12 @@ void Master::ScheduleOnDemandIntegrityPoll(void)
     return;
 }
 
+void Master::UpdateIntegrityPollRate(millis_t interval)
+{
+	mSchedule.AdjustIntegrityPollRate(interval);
+	return;
+}
+
 /* Private functions */
 
 void Master::ProcessDataResponse(const APDU& arResponse)

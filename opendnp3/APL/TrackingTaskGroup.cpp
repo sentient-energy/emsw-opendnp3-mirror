@@ -20,6 +20,8 @@
 #include <opendnp3/APL/AsyncTaskGroup.h>
 #include <opendnp3/APL/TrackingTaskGroup.h>
 
+#include <boost/foreach.hpp>
+
 namespace apl
 {
 
@@ -44,6 +46,14 @@ AsyncTaskContinuous* TrackingTaskGroup::AddContinuous(int aPriority, const TaskH
 	AsyncTaskContinuous* pTask = mpGroup->AddContinuous(aPriority, arCallback, arName);
 	mTaskVec.push_back(pTask);
 	return pTask;
+}
+
+AsyncTaskBase* TrackingTaskGroup::FindTaskByName(const std::string& arName)
+{
+	BOOST_FOREACH(AsyncTaskBase* p, mTaskVec) {
+		if(arName == p->Name()) return p;
+	}
+	return NULL;
 }
 
 }
