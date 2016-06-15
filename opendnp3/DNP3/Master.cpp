@@ -149,7 +149,13 @@ void Master::ProcessCommand(ITask* apTask)
 	CommandData info;
 
 	if(mpState == AMS_Closed::Inst()) { //we're closed
-		if(!mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR)) apTask->Disable();
+		if(!mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR)) {
+			apTask->Disable();
+		}
+		else {
+			// We need to set task completion when the stack is closed
+			apTask->OnComplete(true);
+		}
 	}
 	else {
 
