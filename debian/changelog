@@ -1,3 +1,16 @@
+opendnp3 (1.2.7-0sentient0) unstable; urgency=medium
+
+  * Add ability to change integrity poll interval without restarting.
+
+  * Fix command task completion when the stack is closed.
+    Prevents the stack from executing subsequent tasks resulting in complete
+    stack hang.
+
+  * Timestamp last RX from master
+    Help with supporting stale stack removal.
+
+ -- Nace Reader <nreader@sentient-energy.com>  Tues, 31 July 2016 13:25:00 -0800
+
 opendnp3 (1.2.6-0sentient0) unstable; urgency=medium
 
   * Disable unsolicited responses if an unsolicited response requiring
