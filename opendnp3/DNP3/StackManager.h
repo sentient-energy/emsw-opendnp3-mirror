@@ -28,6 +28,7 @@
 #include <opendnp3/APL/UdpSettings.h>
 #include <opendnp3/DNP3/MasterStackConfig.h>
 #include <opendnp3/DNP3/SlaveStackConfig.h>
+#include <opendnp3/DNP3/Stack.h>
 #include <opendnp3/DNP3/VtoDataInterface.h>
 
 #include <vector>

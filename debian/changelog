@@ -1,3 +1,10 @@
+opendnp3 (1.2.8-0sentient0) unstable; urgency=low
+  * Fix to enable SWIG to build working code
+  * Fix dangling reference in StackManager::GetStack()
+
+ -- Nace Reader <nreader@sentient-energy.com>  Tues, 31 July 2016 15:16:00 -0800
+
+
 opendnp3 (1.2.7-0sentient0) unstable; urgency=medium
 
   * Add ability to change integrity poll interval without restarting.
