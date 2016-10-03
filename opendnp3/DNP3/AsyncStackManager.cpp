@@ -393,7 +393,7 @@ ScanScheduler* AsyncStackManager::GetScanScheduler(const std::string& arStackNam
 	StackRecord record = this->GetStackRecordByName(arStackName);
 	MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
 
-	return &(pMasterStack->mScanScheduler); 
+	return &(pMasterStack->mScanScheduler);
 }
 
 void AsyncStackManager::UpdateIntegrityRate(const std::string& arStackName, uint32_t integrityRate)
@@ -401,6 +401,7 @@ void AsyncStackManager::UpdateIntegrityRate(const std::string& arStackName, uint
 	StackRecord record = this->GetStackRecordByName(arStackName);
 	MasterStack* pMasterStack = dynamic_cast<MasterStack *>(record.stack);
 	if (NULL != pMasterStack) {
+		Transaction tr(&mSuspendTimerSource); // need to pause execution so that this action is safe
 		pMasterStack->mMaster.UpdateIntegrityPollRate(integrityRate);
 	}
 	return;

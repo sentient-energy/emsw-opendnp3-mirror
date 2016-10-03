@@ -27,7 +27,7 @@ namespace dnp
 MasterStack::MasterStack(Logger* apLogger, ITimerSource* apTimerSrc, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, const MasterStackConfig& arCfg) :
 	Stack(apLogger, apTimerSrc, arCfg.app, arCfg.link),
 	mMaster(apLogger->GetSubLogger("master"), arCfg.master, &mApplication, apPublisher, apTaskGroup, apTimerSrc),
-    mScanScheduler(&mMaster, apLogger)
+	mScanScheduler(&mMaster, apTimerSrc, apLogger)
 {
 	mApplication.SetUser(&mMaster);
 }

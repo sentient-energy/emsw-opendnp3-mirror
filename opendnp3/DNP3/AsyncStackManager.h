@@ -254,16 +254,17 @@ public:
 	}
 
 	/**
-       Retrieves stack specific ScanScheduler object 
-     
-       @param arStackName Unique name of the stack
+	  Retrieves stack specific ScanScheduler object
+
+	  @param arStackName Unique name of the stack
     */
     ScanScheduler* GetScanScheduler(const std::string& arStackName);
-	/**
-		Set Integrity Poll Rate (master only)
 
-		@param arStackName Unique name of the stack
-		@param integrityRate New rate for Integrity poll
+	/**
+	  Set Integrity Poll Rate (master only)
+
+	  @param arStackName Unique name of the stack
+	  @param integrityRate New rate for Integrity poll
 	*/
 	void UpdateIntegrityRate(const std::string& arStackName,
 							 uint32_t inegrityRate);

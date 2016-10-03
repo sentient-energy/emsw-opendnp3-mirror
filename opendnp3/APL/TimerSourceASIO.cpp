@@ -106,8 +106,8 @@ void TimerSourceASIO::StartTimer(TimerASIO* apTimer, const FunctionVoidZero& arC
 
 void TimerSourceASIO::OnTimerCallback(const boost::system::error_code& ec, TimerASIO* apTimer, FunctionVoidZero aCallback)
 {
-	mIdleTimers.push_back(apTimer);
 	if(! (ec || apTimer->mCanceled) ) aCallback();
+	mIdleTimers.push_back(apTimer);
 }
 
 } //end namespace
