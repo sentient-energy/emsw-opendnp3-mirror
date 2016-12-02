@@ -53,15 +53,30 @@ void MasterSchedule::ResetStartupTasks()
 
 void MasterSchedule::AddOnDemandIntegrityPoll(Master *apMaster)
 {
-	/* Schedule On Demand Integrity Poll */
-	AsyncTaskBase* pIntegrity = mTracking.Add(
-	                               -1,	// Non periodic task
-	                               0,	// No retry on failure
-	                               AMP_POLL,
-	                               bind(&Master::IntegrityPoll, apMaster, _1),
-	                               "On-Demand Integrity Poll");
+	AsyncTaskBase* pIntegrity = mTracking.FindTaskByName("On-Demand Integrity Poll");
 
-	pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
+	/*** Check to see if on demand task already exists ***/
+	if (NULL == pIntegrity)
+	{
+		/*** create new task if not found ***/
+		pIntegrity = mTracking.Add(
+				-1,	// Non periodic task
+				0,	// No retry on failure
+				AMP_POLL,
+				bind(&Master::IntegrityPoll, apMaster, _1),
+				"On-Demand Integrity Poll");
+
+		pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
+	}
+	else
+	{
+		/*** Check to see if existing task is already running ***/
+		if (false == pIntegrity->IsRunning())
+		{
+			/*** Reset existing task if not already running ***/
+			mpGroup->ResetTask(pIntegrity);
+		}
+	}
 
 	/* Enable task execution */
 	pIntegrity->Enable();

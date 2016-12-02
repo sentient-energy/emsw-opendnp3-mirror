@@ -64,6 +64,11 @@ AsyncTaskBase* AsyncTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int a
 	return pTask;
 }
 
+void AsyncTaskGroup::ResetTask(AsyncTaskBase *pTask)
+{
+	pTask->Reset();
+}
+
 void AsyncTaskGroup::ResetTasks(int aMask)
 {
 	BOOST_FOREACH(AsyncTaskBase * p, mTaskVec) {

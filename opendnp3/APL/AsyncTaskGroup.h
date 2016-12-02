@@ -64,6 +64,8 @@ public:
 	void Enable(int aMask);
 	void Disable(int aMask);
 
+	void ResetTask(AsyncTaskBase *pTask);
+
 	void ResetTasks(int aMask);
 
 	void CheckState();

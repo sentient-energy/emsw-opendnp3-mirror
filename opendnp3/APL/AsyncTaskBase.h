@@ -73,6 +73,11 @@ public:
 	static bool LessThanGroupLevel(const AsyncTaskBase* l, const AsyncTaskBase* r);
 	static bool LessThanGroupLevelNoString(const AsyncTaskBase* l, const AsyncTaskBase* r);
 
+	// @return wether the task is running
+	bool IsRunning() const {
+		return mIsRunning;
+	}
+
 protected:
 
 	AsyncTaskBase(
@@ -118,10 +123,6 @@ protected:
 		return mIsExpired;
 	}
 
-	// @return wether the task is running
-	bool IsRunning() const {
-		return mIsRunning;
-	}
 
 	// @returns max_date_time if the task is currently running or will not run again
 	boost::posix_time::ptime NextRunTime() const {
