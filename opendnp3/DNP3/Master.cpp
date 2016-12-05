@@ -148,7 +148,7 @@ void Master::ProcessCommand(ITask* apTask)
 {
 	CommandData info;
 
-	if(mpState == AMS_Closed::Inst()) { //we're closed
+	if(mpState != AMS_Idle::Inst()) { //we're closed
 		if(!mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR)) {
 			apTask->Disable();
 		}
@@ -208,8 +208,13 @@ void Master::WriteIIN(ITask* apTask)
 
 void Master::IntegrityPoll(ITask* apTask)
 {
-	mClassPoll.Set(PC_CLASS_0);
-	mpState->StartTask(this, apTask, &mClassPoll);
+	if (mpState == AMS_Idle::Inst()) {
+		mClassPoll.Set(PC_CLASS_0);
+		mpState->StartTask(this, apTask, &mClassPoll);
+	}
+	else {
+		apTask->Disable();
+	}
 }
 
 void Master::EventPoll(ITask* apTask, int aClassMask)
