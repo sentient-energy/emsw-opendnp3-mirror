@@ -74,6 +74,7 @@ void ResponseLoader::ProcessData(HeaderReadIterator& arIter, int aGrp, int aVar)
 	case (MACRO_DNP_RADIX(22, 2)): this->Read(arIter, Group22Var2::Inst()); break;
 	case (MACRO_DNP_RADIX(22, 3)): this->Read(arIter, Group22Var3::Inst()); break;
 	case (MACRO_DNP_RADIX(22, 4)): this->Read(arIter, Group22Var4::Inst()); break;
+	case (MACRO_DNP_RADIX(22, 5)): this->Read(arIter, Group22Var5::Inst()); break;
 
 		// Analogs
 	case (MACRO_DNP_RADIX(30, 1)): this->Read(arIter, Group30Var1::Inst()); break;
