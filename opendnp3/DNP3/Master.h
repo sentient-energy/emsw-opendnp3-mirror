@@ -39,6 +39,8 @@
 #include <opendnp3/DNP3/VtoTransmitTask.h>
 #include <opendnp3/DNP3/VtoWriter.h>
 
+#include <unordered_map>
+
 namespace apl
 {
 
@@ -135,6 +137,13 @@ public:
     void ScheduleOnDemandIntegrityPoll(void);
 
 	/**
+	 * Schedules the free form poll
+	 *
+	 * @return None
+	 */
+    void ScheduleFreeFormPoll(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInputPoints);
+ 
+	/**
 	 * Update Integrity Poll Interval
 	 *
 	 * @param interval The new interval for integrity poll
@@ -150,6 +159,7 @@ private:
 
 	void WriteIIN(ITask* apTask);
 	void IntegrityPoll(ITask* apTask);
+	void FreeFormDataPoll(ITask* apTask);
 	void EventPoll(ITask* apTask, int aClassMask);
 	void ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask);
 	void SyncTime(ITask* apTask);
@@ -200,6 +210,7 @@ private:
 	MasterSchedule mSchedule;				// The machinery needed for scheduling
 
 	ClassPoll mClassPoll;					// used to perform integrity/exception scans
+	FreeFormPoll mFreeFormPoll;
 	ClearRestartIIN mClearRestart;			// used to clear the restart
 	ConfigureUnsol mConfigureUnsol;			// manipulates how the outstation does unsolictied reporting
 	TimeSync mTimeSync;						// performs time sync on the outstation

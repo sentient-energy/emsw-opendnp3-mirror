@@ -61,6 +61,7 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(apLogger, apPublisher, &mVtoReader),
+	mFreeFormPoll(apLogger, apPublisher, &mVtoReader),
 	mClearRestart(apLogger),
 	mConfigureUnsol(apLogger),
 	mTimeSync(apLogger, apTimeSrc),
@@ -217,6 +218,16 @@ void Master::IntegrityPoll(ITask* apTask)
 	}
 }
 
+void Master::FreeFormDataPoll(ITask* apTask) {
+	if (mpState == AMS_Idle::Inst()) {
+		mFreeFormPoll.Set(PC_CLASS_0);
+		mpState->StartTask(this, apTask, &mFreeFormPoll);
+	}
+	else {
+		apTask->Disable();
+	}
+}
+
 void Master::EventPoll(ITask* apTask, int aClassMask)
 {
 	mClassPoll.Set(aClassMask);
@@ -311,6 +322,13 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 void Master::ScheduleOnDemandIntegrityPoll(void)
 {
     mSchedule.AddOnDemandIntegrityPoll(this);
+    return;
+}
+
+void Master::ScheduleFreeFormPoll(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInp)
+{
+	mFreeFormPoll.SetDataPoints(ffInp); //ffInputPoints);
+	mSchedule.AddFreeFormPoll(this);
     return;
 }
 

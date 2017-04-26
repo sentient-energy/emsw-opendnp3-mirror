@@ -4,6 +4,13 @@
 #include <opendnp3/APL/Loggable.h>
 #include <opendnp3/APL/ITimerSource.h>
 #include <opendnp3/APL/SuspendTimerSource.h>
+#include <opendnp3/APL/DataTypes.h>
+
+#include <vector>
+#include <mutex>
+#include <unordered_map>
+
+using std::shared_ptr;
 
 namespace apl {
 namespace dnp {
@@ -20,6 +27,7 @@ public:
         {};
 
     void ScheduleOnDemandPoll(void);
+    void ScheduleFreeFormPoll(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInputPoints);
 
 private:
     Master *mMaster;
