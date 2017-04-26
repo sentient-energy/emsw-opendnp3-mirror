@@ -24,6 +24,7 @@
 #include <opendnp3/DNP3/PointClass.h>
 #include <opendnp3/DNP3/ResponseLoader.h>
 #include <opendnp3/DNP3/VtoReader.h>
+//#include <opendnp3/APL/Loggable.h>
 
 namespace apl
 {
@@ -71,6 +72,11 @@ void ClassPoll::Set(int aClassMask)
 	mClassMask = aClassMask;
 }
 
+int ClassPoll::GetClassMask()
+{
+	return mClassMask;
+}
+
 void ClassPoll::ConfigureRequest(APDU& arAPDU)
 {
 	if (mClassMask == PC_INVALID) {
@@ -84,6 +90,93 @@ void ClassPoll::ConfigureRequest(APDU& arAPDU)
 	if (mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
 }
 
+/* Free-Form Poll */
+
+FreeFormPoll::FreeFormPoll(Logger* apLogger, IDataObserver* apObs, VtoReader* apVtoReader) :
+	ClassPoll(apLogger, apObs, apVtoReader) //,
+	//ClassPoll::mClassMask(PC_INVALID)
+{}
+
+void FreeFormPoll::SetDataPoints(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> pnts)
+{
+	// LOG_BLOCK(LEV_INFO, "FreeFormPoll::SetDataPoints - at start");
+	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInp =" << pnts.size() << pnts.at(apl::DataTypes::DT_ANALOG).size());
+
+	ffInputPoints.clear();
+	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInputPoints=" << ffInputPoints.size());
+
+	ffInputPoints = pnts;
+	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInputPoints=" << ffInputPoints.size() << ffInputPoints.at(apl::DataTypes::DT_ANALOG).size());
+
+}
+
+//TODO kept this code for Index based writing in future
+//void FreeFormPoll::WriteIndexed(const SizeByVariationObject* apObj, std::vector<uint32_t> element, APDU& arAPDU)
+//{
+	//Use Group30Var1* pObj = Group30Var1::Inst(); in calling method for analog points
+	/*IndexedWriteIterator i = arAPDU.WriteIndexed(apObj, element.size(), QC_1B_CNT_1B_INDEX);
+	for (int ind=0; ind<element.size(); i++) {
+		i.SetIndex(size_t(element.at(ind)));
+		++i;
+	}*/
+//}
+
+
+void FreeFormPoll::ConfigureRequest(APDU& arAPDU)
+{
+	LOG_BLOCK(LEV_DEBUG, "FreeFormPoll::ConfigureRequest");
+
+	if (this->GetClassMask() == PC_INVALID) {
+		throw InvalidStateException(LOCATION, "Class mask has not been set");
+	}
+
+	arAPDU.Set(FC_READ);
+
+	if ((this->GetClassMask() & PC_CLASS_0) && ffInputPoints.size() > 0) {
+
+		for (std::pair<apl::DataTypes, std::vector<uint32_t>> element : ffInputPoints)
+		{
+			if (element.second.size() <= 0)
+				continue; //should not come here
+			if (element.first == apl::DataTypes::DT_ANALOG) {
+				for (int ind=0; ind<element.second.size(); ++ind) {
+					//Group30Var1* pObj = Group30Var1::Inst();
+					size_t index = element.second.at(ind);
+					ObjectWriteIterator i = arAPDU.WriteContiguous(Group30Var1::Inst(), index, index, QC_1B_START_STOP );
+				}
+			}
+			if (element.first == apl::DataTypes::DT_BINARY) {
+				for (int ind=0; ind<element.second.size(); ++ind) {
+					//Group1Var2* pObj = Group1Var2::Inst();
+					size_t index = element.second.at(ind);
+					ObjectWriteIterator i = arAPDU.WriteContiguous(Group1Var2::Inst(), index, index, QC_1B_START_STOP );
+				}
+			}
+			if (element.first == apl::DataTypes::DT_COUNTER) {
+				for (int ind=0; ind<element.second.size(); ++ind) {
+					//Group20Var1* pObj = Group20Var1::Inst();
+					size_t index = element.second.at(ind);
+					ObjectWriteIterator i = arAPDU.WriteContiguous(Group20Var1::Inst(), index, index, QC_1B_START_STOP );
+				}
+			}
+			if (element.first == apl::DataTypes::DT_CONTROL_STATUS) {
+				for (int ind=0; ind<element.second.size(); ++ind) {
+					//Group10Var2* pObj = Group10Var2::Inst();
+					size_t index = element.second.at(ind);
+					ObjectWriteIterator i = arAPDU.WriteContiguous(Group10Var2::Inst(), index, index, QC_1B_START_STOP );
+				}
+			}
+			if (element.first == apl::DataTypes::DT_SETPOINT_STATUS) {
+				for (int ind=0; ind<element.second.size(); ++ind) {
+					//Group40Var1* pObj = Group40Var1::Inst();
+					size_t index = element.second.at(ind);
+					ObjectWriteIterator i = arAPDU.WriteContiguous(Group40Var1::Inst(), index, index, QC_1B_START_STOP );
+				}
+			}
+
+		}
+	}
+}
 
 }
 } //end ns

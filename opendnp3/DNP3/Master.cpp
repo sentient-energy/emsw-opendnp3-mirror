@@ -61,6 +61,7 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(apLogger, apPublisher, &mVtoReader),
+	mFreeFormPoll(apLogger, apPublisher, &mVtoReader),
 	mClearRestart(apLogger),
 	mConfigureUnsol(apLogger),
 	mTimeSync(apLogger, apTimeSrc),
@@ -183,9 +184,16 @@ void Master::ProcessCommand(ITask* apTask)
 
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
+	//LOG_BLOCK(LEV_INFO, "StartTask w 2 args");
 	if(aInit) apMasterTask->Init();
+	//LOG_BLOCK(LEV_INFO, "StartTask after Init " << " TaskName="<<apMasterTask->Name());
+
 	apMasterTask->ConfigureRequest(mRequest);
+	//LOG_BLOCK(LEV_INFO, "StartTask after ConfigureRequest : mRequest=" << mRequest.ToString());
+	//LOG_BLOCK(LEV_INFO, "StartTask after ConfigureRequest " << " TaskName="<<apMasterTask->Name());
+				//<< "Request=" << mRequest.ToString());
 	mpAppLayer->SendRequest(mRequest);
+	//LOG_BLOCK(LEV_INFO, "StartTask after SendRequest");
 }
 
 /* Tasks */
@@ -211,6 +219,23 @@ void Master::IntegrityPoll(ITask* apTask)
 	if (mpState == AMS_Idle::Inst()) {
 		mClassPoll.Set(PC_CLASS_0);
 		mpState->StartTask(this, apTask, &mClassPoll);
+	}
+	else {
+		apTask->Disable();
+	}
+}
+
+void Master::FreeFormDataPoll(ITask* apTask) {
+	LOG_BLOCK(LEV_INFO, "Master::FreeFormPoll::at start");
+
+	if (mpState == AMS_Idle::Inst()) {
+		mFreeFormPoll.Set(PC_CLASS_0);
+		//LOG_BLOCK(LEV_INFO, "Master::FreeFormPoll::setting data points" << ffInputPoints);
+		//mFreeFormPoll.SetDataPoints(ffInputPoints);
+
+		//LOG_BLOCK(LEV_INFO, "Master::FreeFormPoll::after ClassPoll.Set");
+		mpState->StartTask(this, apTask, &mFreeFormPoll);
+		//LOG_BLOCK(LEV_INFO, "Master::FreeFormPoll::after StartTask");
 	}
 	else {
 		apTask->Disable();
@@ -311,6 +336,26 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 void Master::ScheduleOnDemandIntegrityPoll(void)
 {
     mSchedule.AddOnDemandIntegrityPoll(this);
+    return;
+}
+
+void Master::ScheduleFreeFormPoll(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInp)
+{
+	//TODO add data from parameter to Master
+	//LOG_BLOCK(LEV_INFO, "Master::ScheduleFreeFormPoll : start ");
+	/*if (ffInputPoints.size() > 0) {
+		LOG_BLOCK(LEV_INFO,  " ffInputPoints=" << ffInputPoints.size() << ffInputPoints.at(apl::DataTypes::DT_ANALOG).size());
+		LOG_BLOCK(LEV_INFO,  " ffInp =" << ffInp.size() << ffInp.at(apl::DataTypes::DT_ANALOG).size());
+	} */
+	this->ffInputPoints.clear();
+	this->ffInputPoints = ffInp;
+	/*if (ffInputPoints.size() > 0) {
+		LOG_BLOCK(LEV_INFO,  " ffInputPoints=" << ffInputPoints.size() << ffInputPoints.at(apl::DataTypes::DT_ANALOG).size());
+		LOG_BLOCK(LEV_INFO,  " ffInp =" << ffInp.size() << ffInp.at(apl::DataTypes::DT_ANALOG).size());
+	}*/
+	mFreeFormPoll.SetDataPoints(ffInp); //ffInputPoints);
+	mSchedule.AddFreeFormPoll(this);
+	//LOG_BLOCK(LEV_INFO, "Master::ScheduleFreeFormPoll : end");
     return;
 }
 

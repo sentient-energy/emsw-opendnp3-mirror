@@ -21,6 +21,8 @@
 
 #include <opendnp3/DNP3/MasterTaskBase.h>
 #include <opendnp3/DNP3/VtoReader.h>
+#include <opendnp3/APL/Loggable.h>
+#include <unordered_map>
 
 namespace apl
 {
@@ -64,7 +66,7 @@ public:
 	ClassPoll(Logger*, IDataObserver*, VtoReader*);
 
 	void Set(int aClassMask);
-
+	int GetClassMask();
 	//Implement MasterTaskBase
 	void ConfigureRequest(APDU& arAPDU);
 	virtual std::string Name() const {
@@ -74,6 +76,22 @@ public:
 private:
 
 	int mClassMask;
+
+};
+
+class FreeFormPoll : public ClassPoll
+{
+public:
+
+	FreeFormPoll(Logger*, IDataObserver*, VtoReader*);
+	void ConfigureRequest(APDU& arAPDU) override;
+	std::string Name() const {
+		return "Free-Form Poll";
+	}
+	void SetDataPoints(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> pnts);
+
+private:
+	std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInputPoints;
 
 };
 

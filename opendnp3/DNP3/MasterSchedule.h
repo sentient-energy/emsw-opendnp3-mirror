@@ -73,6 +73,9 @@ public:
     // Adds the on demand integrity on the task vector
     void AddOnDemandIntegrityPoll(Master* mpMaster);
 
+    // Adds the free form on the task vector
+    void AddFreeFormPoll(Master* mpMaster);
+
 	void AdjustIntegrityPollRate(millis_t IntegrityRate);
 
 private:

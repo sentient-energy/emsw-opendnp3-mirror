@@ -84,6 +84,39 @@ void MasterSchedule::AddOnDemandIntegrityPoll(Master *apMaster)
 	return;
 }
 
+void MasterSchedule::AddFreeFormPoll(Master *apMaster)
+{
+	AsyncTaskBase* pIntegrity = mTracking.FindTaskByName("Free-Form Poll");
+
+	/*** Check to see if free form already exists ***/
+	if (NULL == pIntegrity)
+	{
+		/*** create new task if not found ***/
+		pIntegrity = mTracking.Add(
+				-1,	// Non periodic task
+				0,	// No retry on failure
+				AMP_POLL,
+				bind(&Master::FreeFormDataPoll, apMaster, _1),//TODO Integrity Poll or Class Poll
+				"Free-Form Poll");
+
+		pIntegrity->SetFlags(ONLINE_ONLY_TASKS);
+	}
+	else
+	{
+		/*** Check to see if existing task is already running ***/
+		if (false == pIntegrity->IsRunning())
+		{
+			/*** Reset existing task if not already running ***/
+			mpGroup->ResetTask(pIntegrity);
+		}
+	}
+
+	/* Enable task execution */
+	pIntegrity->Enable();
+
+	return;
+}
+
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 {
 	/*
