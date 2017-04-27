@@ -99,15 +99,8 @@ FreeFormPoll::FreeFormPoll(Logger* apLogger, IDataObserver* apObs, VtoReader* ap
 
 void FreeFormPoll::SetDataPoints(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> pnts)
 {
-	// LOG_BLOCK(LEV_INFO, "FreeFormPoll::SetDataPoints - at start");
-	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInp =" << pnts.size() << pnts.at(apl::DataTypes::DT_ANALOG).size());
-
 	ffInputPoints.clear();
-	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInputPoints=" << ffInputPoints.size());
-
 	ffInputPoints = pnts;
-	//LOG_BLOCK(LEV_INFO,  "FreeFormPoll::SetDataPoints - ffInputPoints=" << ffInputPoints.size() << ffInputPoints.at(apl::DataTypes::DT_ANALOG).size());
-
 }
 
 //TODO kept this code for Index based writing in future
@@ -140,35 +133,30 @@ void FreeFormPoll::ConfigureRequest(APDU& arAPDU)
 				continue; //should not come here
 			if (element.first == apl::DataTypes::DT_ANALOG) {
 				for (int ind=0; ind<element.second.size(); ++ind) {
-					//Group30Var1* pObj = Group30Var1::Inst();
 					size_t index = element.second.at(ind);
 					ObjectWriteIterator i = arAPDU.WriteContiguous(Group30Var1::Inst(), index, index, QC_1B_START_STOP );
 				}
 			}
 			if (element.first == apl::DataTypes::DT_BINARY) {
 				for (int ind=0; ind<element.second.size(); ++ind) {
-					//Group1Var2* pObj = Group1Var2::Inst();
 					size_t index = element.second.at(ind);
 					ObjectWriteIterator i = arAPDU.WriteContiguous(Group1Var2::Inst(), index, index, QC_1B_START_STOP );
 				}
 			}
 			if (element.first == apl::DataTypes::DT_COUNTER) {
 				for (int ind=0; ind<element.second.size(); ++ind) {
-					//Group20Var1* pObj = Group20Var1::Inst();
 					size_t index = element.second.at(ind);
 					ObjectWriteIterator i = arAPDU.WriteContiguous(Group20Var1::Inst(), index, index, QC_1B_START_STOP );
 				}
 			}
 			if (element.first == apl::DataTypes::DT_CONTROL_STATUS) {
 				for (int ind=0; ind<element.second.size(); ++ind) {
-					//Group10Var2* pObj = Group10Var2::Inst();
 					size_t index = element.second.at(ind);
 					ObjectWriteIterator i = arAPDU.WriteContiguous(Group10Var2::Inst(), index, index, QC_1B_START_STOP );
 				}
 			}
 			if (element.first == apl::DataTypes::DT_SETPOINT_STATUS) {
 				for (int ind=0; ind<element.second.size(); ++ind) {
-					//Group40Var1* pObj = Group40Var1::Inst();
 					size_t index = element.second.at(ind);
 					ObjectWriteIterator i = arAPDU.WriteContiguous(Group40Var1::Inst(), index, index, QC_1B_START_STOP );
 				}
