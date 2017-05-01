@@ -124,6 +124,7 @@ void FreeFormPoll::ConfigureRequest(APDU& arAPDU)
 	}
 
 	arAPDU.Set(FC_READ);
+    std::lock_guard<std::mutex> guard{ffInputPoints_mutex_};
 
 	if ((this->GetClassMask() & PC_CLASS_0) && ffInputPoints.size() > 0) {
 

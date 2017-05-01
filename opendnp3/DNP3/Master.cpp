@@ -219,8 +219,6 @@ void Master::IntegrityPoll(ITask* apTask)
 }
 
 void Master::FreeFormDataPoll(ITask* apTask) {
-	LOG_BLOCK(LEV_INFO, "Master::FreeFormPoll::at start");
-
 	if (mpState == AMS_Idle::Inst()) {
 		mFreeFormPoll.Set(PC_CLASS_0);
 		mpState->StartTask(this, apTask, &mFreeFormPoll);
@@ -329,8 +327,6 @@ void Master::ScheduleOnDemandIntegrityPoll(void)
 
 void Master::ScheduleFreeFormPoll(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInp)
 {
-	this->ffInputPoints.clear();
-	this->ffInputPoints = ffInp;
 	mFreeFormPoll.SetDataPoints(ffInp); //ffInputPoints);
 	mSchedule.AddFreeFormPoll(this);
     return;

@@ -218,8 +218,6 @@ private:
 	SetpointTask mExecuteSP;				// task for executing setpoint
 	VtoTransmitTask mVtoTransmitTask;		// used to transmit VTO data in mVtoWriter
 
-	std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInputPoints;
-
 };
 
 }

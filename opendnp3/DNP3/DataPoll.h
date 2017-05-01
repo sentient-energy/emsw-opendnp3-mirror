@@ -91,6 +91,7 @@ public:
 	void SetDataPoints(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> pnts);
 
 private:
+	std::mutex ffInputPoints_mutex_;
 	std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> ffInputPoints;
 
 };
