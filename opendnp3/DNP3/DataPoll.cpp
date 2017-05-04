@@ -99,6 +99,7 @@ FreeFormPoll::FreeFormPoll(Logger* apLogger, IDataObserver* apObs, VtoReader* ap
 
 void FreeFormPoll::SetDataPoints(std::unordered_map<apl::DataTypes, std::vector<uint32_t>, std::EnumClassHash> pnts)
 {
+	std::lock_guard<std::mutex> guard{ffInputPoints_mutex_};
 	ffInputPoints.clear();
 	ffInputPoints = pnts;
 }
@@ -124,7 +125,7 @@ void FreeFormPoll::ConfigureRequest(APDU& arAPDU)
 	}
 
 	arAPDU.Set(FC_READ);
-    std::lock_guard<std::mutex> guard{ffInputPoints_mutex_};
+	std::lock_guard<std::mutex> guard{ffInputPoints_mutex_};
 
 	if ((this->GetClassMask() & PC_CLASS_0) && ffInputPoints.size() > 0) {
 
