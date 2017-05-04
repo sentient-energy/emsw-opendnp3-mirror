@@ -23,6 +23,7 @@
 #include <opendnp3/DNP3/VtoReader.h>
 #include <opendnp3/APL/Loggable.h>
 #include <unordered_map>
+#include <mutex>
 
 namespace apl
 {
