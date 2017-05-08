@@ -116,6 +116,7 @@ public:
 	virtual void SetQuality(boost::uint8_t aQuality);
 	void SetTime(const TimeStamp_t arTime);
 	void SetToNow();
+        void SetToNowUTC();
 
 	virtual std::string ToString() const = 0;
 
