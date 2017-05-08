@@ -56,6 +56,11 @@ void DataPoint :: SetToNow()
 	mTime = TimeStamp::GetTimeStamp();
 }
 
+void DataPoint :: SetToNowUTC()
+{
+    mTime = TimeStamp::GetUTCTimeStamp();
+}
+
 // BoolDataPoint
 
 
