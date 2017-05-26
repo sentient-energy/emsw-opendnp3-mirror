@@ -85,7 +85,7 @@ class FreeFormPoll : public ClassPoll
 public:
 
 	FreeFormPoll(Logger*, IDataObserver*, VtoReader*);
-	void ConfigureRequest(APDU& arAPDU) override;
+	void ConfigureRequest(APDU& arAPDU);
 	std::string Name() const {
 		return "Free-Form Poll";
 	}
