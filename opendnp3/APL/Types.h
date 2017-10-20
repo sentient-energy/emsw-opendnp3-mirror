@@ -16,8 +16,8 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-#ifndef __TYPES_H_
-#define __TYPES_H_
+#ifndef __APL_TYPES_H_
+#define __APL_TYPES_H_
 
 #include <boost/cstdint.hpp>
 

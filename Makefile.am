@@ -552,9 +552,9 @@ testset_SOURCES = \
 	Terminal/PhysicalLayerSyncProxy.cpp \
 	Terminal/Terminal.cpp \
 	Terminal/TerminalInterfaces.cpp \
-	TestSet/AddressScanner.cpp \
-	TestSet/main.cpp \
-	TestSet/StackHelpers.cpp \
+	TestSetSrc/AddressScanner.cpp \
+	TestSetSrc/main.cpp \
+	TestSetSrc/StackHelpers.cpp \
 	XMLBindings/APLXML_Base.cpp \
 	XMLBindings/APLXML_DNP.cpp \
 	XMLBindings/APLXML_MTS.cpp \
@@ -567,8 +567,8 @@ noinst_PROGRAMS = apltest dnp3test demo-master-cpp demo-slave-cpp
 
 apltest_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
 apltest_SOURCES = \
-	APLTest/TestPhysicalLayerAsyncUDP.cpp \
-	APLTest/TestStartBoostUTF.cpp \
+	APLTestSrc/TestPhysicalLayerAsyncUDP.cpp \
+	APLTestSrc/TestStartBoostUTF.cpp \
 	APLTestTools/AsyncPhysTestObject.cpp \
 	APLTestTools/AsyncTestObjectASIO.cpp \
 	APLTestTools/AsyncTestObject.cpp \
