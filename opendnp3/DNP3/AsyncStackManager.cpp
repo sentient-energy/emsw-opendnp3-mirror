@@ -35,6 +35,7 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <iostream>
 
 using namespace std;
@@ -348,6 +349,11 @@ void AsyncStackManager::Run()
 	do {
 		try {
 			num = mService.Get()->run();
+		}
+		catch(boost::gregorian::bad_month& ex)
+		{
+			LOG_BLOCK(LEV_ERROR, "Bad month exception: " << ex.what());
+                        throw;
 		}
 		catch(const std::exception& ex) {
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception: " << ex.what());
