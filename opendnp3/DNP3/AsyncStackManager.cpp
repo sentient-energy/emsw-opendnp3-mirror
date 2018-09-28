@@ -350,10 +350,20 @@ void AsyncStackManager::Run()
 		try {
 			num = mService.Get()->run();
 		}
-		catch(boost::gregorian::bad_month& ex)
+		catch (boost::gregorian::bad_day_of_month& ex)
+		{
+			LOG_BLOCK(LEV_ERROR, "Bad Date exception: " << ex.what());
+			throw;
+		}
+		catch (boost::gregorian::bad_month& ex)
 		{
 			LOG_BLOCK(LEV_ERROR, "Bad month exception: " << ex.what());
-                        throw;
+			throw;
+		}
+		catch (boost::gregorian::bad_year& ex)
+		{
+			LOG_BLOCK(LEV_ERROR, "Bad year exception: " << ex.what());
+			throw;
 		}
 		catch(const std::exception& ex) {
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception: " << ex.what());
