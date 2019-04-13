@@ -21,6 +21,7 @@
 
 #include <opendnp3/APL/Configure.h>
 #include <opendnp3/APL/Types.h>
+#include <sys/time.h>
 
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <string>
@@ -77,6 +78,13 @@ public:
 	}
 
 	std::string GetTimeString() const;
+
+	static long long GetCurrentTimeInMsec() {
+		struct timeval tp;
+		gettimeofday(&tp, NULL);
+		long long ms = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;
+		return ms;
+	}
 
 private:
 
