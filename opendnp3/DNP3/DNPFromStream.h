@@ -21,7 +21,7 @@
 
 #include <opendnp3/APL/CommandTypes.h>
 #include <opendnp3/APL/Configure.h>
-#include <sys/time.h>
+
 #include <iostream>
 
 #ifdef APL_PLATFORM_WIN
@@ -67,17 +67,7 @@ public:
 
 	template <typename T>
 	static typename T::DataType ReadQVT(const boost::uint8_t* apPos, const T* apObj);
-
-	static long long GetCurrentTimeInMsec();	
 };
-
-inline long long DNPFromStream::GetCurrentTimeInMsec()
-{
-	struct timeval tp;
-	gettimeofday(&tp, NULL);
-	long long ms = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000; //get current timestamp in milliseconds
-	return ms;
-}
 
 template <typename T, typename PayloadType, apl::SetpointEncodingType EncodingType>
 inline Setpoint DNPFromStream::ReadSetpoint(const boost::uint8_t* apPos, const T* apObj)
@@ -109,11 +99,7 @@ inline typename T::DataType DNPFromStream::ReadBinaryQVT(const boost::uint8_t* a
 {
 	typename T::DataType ret;
 	ret.SetQualityValue(apObj->mFlag.Get(apPos));
-	TimeStamp_t t = (TimeStamp_t)apObj->mTime.Get(apPos);
-	if(t < 0) {
-		t = GetCurrentTimeInMsec();
-	}
-	ret.SetTime(t);
+	ret.SetTime((TimeStamp_t)apObj->mTime.Get(apPos));
 	return ret;
 }
 
@@ -122,11 +108,7 @@ inline typename T::DataType DNPFromStream::ReadQT(const boost::uint8_t* apPos, c
 {
 	typename T::DataType ret;
 	ret.SetQuality(apObj->mFlag.Get(apPos));
-	TimeStamp_t t = (TimeStamp_t)apObj->mTime.Get(apPos);
-	if(t < 0) {
-		t = GetCurrentTimeInMsec();
-	}
-	ret.SetTime(t);
+	ret.SetTime((TimeStamp_t)apObj->mTime.Get(apPos));
 	return ret;
 }
 
@@ -153,11 +135,7 @@ inline typename T::DataType DNPFromStream::ReadQVT(const boost::uint8_t* apPos, 
 	typename T::DataType ret;
 	ret.SetQuality(apObj->mFlag.Get(apPos));
 	ret.SetValue(apObj->mValue.Get(apPos));
-	TimeStamp_t t = (TimeStamp_t)apObj->mTime.Get(apPos);
-	if(t < 0) {
-		t = GetCurrentTimeInMsec();
-	}
-	ret.SetTime(t);
+	ret.SetTime((TimeStamp_t)apObj->mTime.Get(apPos));
 	return ret;
 }
 }

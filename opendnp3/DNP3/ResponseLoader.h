@@ -97,7 +97,7 @@ private:
 	template <class T>
 	void ReadCTO(HeaderReadIterator& arIter);
 
-	long long GetCurrentTime();
+	millis_t GetCurrentTime();
 
 	/**
 	 * Convert an incoming data stream for DNP3 Object Groups 112 or 113
@@ -124,12 +124,12 @@ private:
 	CTOHistory mCTO;
 };
 
-inline long long ResponseLoader::GetCurrentTime()
+inline millis_t ResponseLoader::GetCurrentTime()
 {
-  struct timeval tp;
-  gettimeofday(&tp, NULL);
-  long long ms = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000; //get current timestamp in milliseconds
-  return ms;
+	struct timeval tp;
+	gettimeofday(&tp, NULL);
+	millis_t ms = (millis_t) tp.tv_sec * 1000L + tp.tv_usec / 1000; //get current timestamp in milliseconds
+	return ms;
 }
 
 template <class T>
@@ -171,18 +171,14 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 			value.SetTime(t + value.GetTime());
 		}
 
-		if(value.GetTime() < 0) {
-			value.SetTime(GetCurrentTime());
-		}
-
 		/* Make sure the value has quality information */
 		if (!apObj->HasQuality()) {
 			value.SetQuality(T::ONLINE);
 		}
-
-		if(value.GetTime() < 946684800000 || value.GetTime() > 1893456000000) {
-			value.SetTime(GetCurrentTime());
-		}
+		/* lower:12/31/1999 upper:01/01/2050 */
+    
+		TimeStamp_t tt = (value.GetTime() < 946684800000 || value.GetTime() > 2524636800000) ? (TimeStamp_t) GetCurrentTime() : value.GetTime();
+		value.SetTime(tt);
 
 		mpPublisher->Update(value, index);
 	}
