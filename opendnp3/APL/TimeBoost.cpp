@@ -81,9 +81,9 @@ void TimeBoost::SetTo(millis_t aTimeMS)
 void TimeBoost::AddMS(millis_t aAddMS)
 {
 	mTime += milliseconds(aAddMS);
-        if(GetValueMS() < 0) { 
-            SetTo(GetCurrentTimeInMsec());
-        }
+	if(GetValueMS() < 0) { 
+		SetTo(GetCurrentTimeInMsec());
+	}
 }
 
 millis_t TimeBoost::GetValueMS() const
