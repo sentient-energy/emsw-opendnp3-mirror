@@ -143,8 +143,12 @@ void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 	}
 
 	TimeStamp_t t = static_cast<TimeStamp_t>(T::Inst()->mTime.Get(*i));
-	TimeStamp_t tt = t < 0 ? t : (TimeStamp_t) GetCurrentTime();
-	mCTO.SetCTO(tt);
+
+	if(t < 946684800000 || t > 2524636800000) {
+		t = GetCurrentTime() - 14400000;
+	}
+
+	mCTO.SetCTO(t);
 }
 
 template <class T>
@@ -175,10 +179,10 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 		if (!apObj->HasQuality()) {
 			value.SetQuality(T::ONLINE);
 		}
-		/* lower:12/31/1999 upper:01/01/2050 */
-    
-		TimeStamp_t tt = (value.GetTime() < 946684800000 || value.GetTime() > 2524636800000) ? (TimeStamp_t) GetCurrentTime() : value.GetTime();
-		value.SetTime(tt);
+
+		if(value.GetTime() < 946684800000 || value.GetTime() > 2524636800000) {
+			value.SetTime(GetCurrentTime() - 14400000);
+		}
 
 		mpPublisher->Update(value, index);
 	}
