@@ -43,9 +43,6 @@ TimeBoost::TimeBoost(millis_t aTimeMS)
 TimeBoost::TimeBoost(ptime aTime) :
 	mTime(aTime)
 {
-        if(GetValueMS() < 0) {
-            SetTo(GetCurrentTimeInMsec());
-        }
 
 }
 
@@ -72,18 +69,12 @@ std::string TimeBoost::GetTimeString() const
 }
 void TimeBoost::SetTo(millis_t aTimeMS)
 {
-	if(aTimeMS < 0) {
-		aTimeMS = GetCurrentTimeInMsec();
-	}
 	mTime = GetPTimeFromMS(aTimeMS);
 }
 
 void TimeBoost::AddMS(millis_t aAddMS)
 {
 	mTime += milliseconds(aAddMS);
-	if(GetValueMS() < 0) { 
-		SetTo(GetCurrentTimeInMsec());
-	}
 }
 
 millis_t TimeBoost::GetValueMS() const
@@ -98,9 +89,6 @@ millis_t TimeBoost::CalcDeltaMS(const TimeBoost& now, const TimeBoost& start)
 
 ptime TimeBoost::GetPTimeFromMS(millis_t aTimeMS)
 {
-	if(aTimeMS < 0) {
-             aTimeMS = GetCurrentTimeInMsec();
-	}
 	ptime t(msEpochDate, milliseconds(aTimeMS));
 	return t;
 }
