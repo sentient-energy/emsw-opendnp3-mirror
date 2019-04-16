@@ -97,8 +97,6 @@ private:
 	template <class T>
 	void ReadCTO(HeaderReadIterator& arIter);
 
-	millis_t GetCurrentTime();
-
 	/**
 	 * Convert an incoming data stream for DNP3 Object Groups 112 or 113
 	 * into a VtoData object and pass the object to the user application
@@ -124,14 +122,6 @@ private:
 	CTOHistory mCTO;
 };
 
-inline millis_t ResponseLoader::GetCurrentTime()
-{
-	struct timeval tp;
-	gettimeofday(&tp, NULL);
-	millis_t ms = (millis_t) tp.tv_sec * 1000L + tp.tv_usec / 1000; //get current timestamp in milliseconds
-	return ms;
-}
-
 template <class T>
 void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 {
@@ -143,11 +133,6 @@ void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 	}
 
 	TimeStamp_t t = static_cast<TimeStamp_t>(T::Inst()->mTime.Get(*i));
-
-	if(t < 946684800000 || t > 2524636800000) {
-		t = GetCurrentTime() - 14400000;
-	}
-
 	mCTO.SetCTO(t);
 }
 
@@ -178,10 +163,6 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 		/* Make sure the value has quality information */
 		if (!apObj->HasQuality()) {
 			value.SetQuality(T::ONLINE);
-		}
-
-		if(value.GetTime() < 946684800000 || value.GetTime() > 2524636800000) {
-			value.SetTime(GetCurrentTime() - 14400000);
 		}
 
 		mpPublisher->Update(value, index);
