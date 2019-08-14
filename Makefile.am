@@ -529,11 +529,11 @@ dnpheaders_HEADERS = \
 	opendnp3/DNP3/VtoTransmitTask.h \
 	opendnp3/DNP3/VtoWriter.h
 
-bin_PROGRAMS = testset
+bin_PROGRAMS = bin_testset
 
-testset_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
-testset_CFLAGS = -Itinyxml
-testset_SOURCES = \
+bin_testset_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
+bin_testset_CFLAGS = -Itinyxml
+bin_testset_SOURCES = \
 	APLXML/PhysicalLayerManagerXML.cpp \
 	APLXML/PhysicalLayerXMLFactory.cpp \
 	APLXML/tinybinding.cpp \
@@ -563,10 +563,10 @@ testset_SOURCES = \
 	tinyxml/tinyxmlerror.cpp \
 	tinyxml/tinyxmlparser.cpp
 
-noinst_PROGRAMS = apltest dnp3test demo-master-cpp demo-slave-cpp
+noinst_PROGRAMS = bin_apltest bin_dnp3test bin_demo-master-cpp bin_demo-slave-cpp
 
-apltest_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
-apltest_SOURCES = \
+bin_apltest_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
+bin_apltest_SOURCES = \
 	APLTest/TestPhysicalLayerAsyncUDP.cpp \
 	APLTest/TestStartBoostUTF.cpp \
 	APLTestTools/AsyncPhysTestObject.cpp \
@@ -587,8 +587,8 @@ apltest_SOURCES = \
 	APLTestTools/PhysicalLayerWrapper.cpp \
 	APLTestTools/WrappedTcpPipe.cpp
 
-dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
-dnp3test_SOURCES = \
+bin_dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
+bin_dnp3test_SOURCES = \
 	APLTestTools/AsyncPhysTestObject.cpp \
 	APLTestTools/AsyncTestObjectASIO.cpp \
 	APLTestTools/AsyncTestObject.cpp \
@@ -656,13 +656,13 @@ dnp3test_SOURCES = \
 	DNP3Test/TransportTestObject.cpp \
 	DNP3Test/VtoIntegrationTestBase.cpp
 
-demo_master_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
-demo_master_cpp_SOURCES = \
+bin_demo_master_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
+bin_demo_master_cpp_SOURCES = \
 	demos/master-cpp/DemoMain.cpp \
 	demos/master-cpp/MasterDemo.cpp
 
-demo_slave_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
-demo_slave_cpp_SOURCES = \
+bin_demo_slave_cpp_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
+bin_demo_slave_cpp_SOURCES = \
 	demos/slave-cpp/DemoMain.cpp \
 	demos/slave-cpp/SlaveDemo.cpp
 
